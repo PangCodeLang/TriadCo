@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-wrapper {
+  position: relative;
+}
+
+.login-card {
+  display: flex;
+  width: 700px;
+  height: 350px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.8s ease, slideUp 0.8s ease;
+}
+.login-left {
+  flex: 1;
+  background-color: #ccc;
+}
+
+.login-left img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.login-right {
+  flex: 1;
+  background-color: #203354;
+  color: white;
+  padding: 40px 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.login-right h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-size: 12px;
+  margin-bottom: 5px;
+  text-transform: lowercase;
+}
+
+input[type="text"],
+input[type="password"] {
+  padding: 8px 10px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 15px;
+  font-size: 14px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  transform: scale(1.05); 
+  box-shadow: 0 0 10px rgba(32, 51, 84, 0.5); 
+  border: 2px solid #203354; 
+  outline: none; 
+}
+
+button {
+    padding: 10px;
+    border: none;
+    border-radius: 15px;
+    background-color: #e0e0e0;
+    color: #1b2e41;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #ccc;
+    transform: scale(1.1); 
+  }
+  
+  .bottom-logo {
+    position: absolute;
+    bottom: -120px;
+    right: -300px;
+    animation: float 3s ease-in-out infinite; 
+  }
+  
+  .bottom-logo img {
+    width: 100px;
+    height: auto;
+    opacity: 0.9;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+  
+  .bottom-logo img:hover {
+    transform: rotate(10deg) scale(1.1); 
+    opacity: 1; 
+  }
+  
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px); 
+    }
+  }
+
+@keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideUp {
+    0% {
+      transform: translateY(50px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
