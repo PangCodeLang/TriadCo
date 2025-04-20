@@ -15,7 +15,7 @@
             <div class="login-right">
                 <h2>TriadCo.<br>Hotel Set-Up</h2>
 
-                <form action="{{ route('login.get') }}" method="GET">
+                <form action="{{ route('login.post') }}" method="POST">
                     @csrf 
 
                     <label for="name">name</label>

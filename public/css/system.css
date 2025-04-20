@@ -1,4 +1,6 @@
-/* General Reset */
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@700&display=swap');
+
 * {
     margin: 0;
     padding: 0;
@@ -12,10 +14,14 @@ body {
     height: 100vh;
     display: flex;
     flex-direction: column;
+}
+
+body.fade-in {
     animation: fadeIn 0.5s ease-in-out;
 }
 
-/* Sidebar */
+/*----------------------------------------------------------------------------------------------- */
+
 .sidebar {
     position: fixed;
     top: 0;
@@ -41,6 +47,7 @@ body {
     margin-bottom: 30px;
     text-align: center;
     letter-spacing: 1px;
+    font-family: 'Lora', serif;
 }
 
 .sidebar ul {
@@ -59,6 +66,7 @@ body {
     background-color: #1b2e41;
     border-radius: 12px;
     display: block;
+    font-family: 'Raleway', sans-serif;
     transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -68,7 +76,28 @@ body {
     box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Header */
+.sidebar-logo {
+    margin-top: auto; 
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    padding: 20px;
+}
+
+.sidebar-logo img {
+    width: 130px; 
+    height: auto;
+    opacity: 0.9;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.sidebar-logo img:hover {
+    transform: scale(1.1); 
+    opacity: 1; 
+}
+
+/*----------------------------------------------------------------------------------------------- */
+
 .header {
     position: fixed;
     top: 0;
@@ -92,6 +121,7 @@ body {
     text-align: center;
     flex: 1;
     letter-spacing: 0.5px;
+    font-family: 'Lora', serif;
 }
 
 .header .toggle-btn {
@@ -119,13 +149,13 @@ body {
     opacity: 0.8;
 }
 
-/* Adjust header when sidebar is hidden */
 .sidebar.hidden + .header {
     left: 0;
     width: 100%;
 }
 
-/* Main Content */
+/*----------------------------------------------------------------------------------------------- */
+
 .main-content {
     margin-top: 60px;
     margin-left: 200px;
@@ -133,8 +163,8 @@ body {
     background-color: #f4f4f9;
     height: calc(100vh - 60px);
     overflow-y: auto;
-    transition: margin-left 0.3s ease-in-out;
-    animation: fadeIn 0.5s ease-in-out; 
+    transition: margin-left 0.3s ease-in-out; 
+    animation: fadeIn 0.5s ease-in-out;
 }
 
 .sidebar.hidden ~ .main-content {
@@ -142,11 +172,14 @@ body {
 }
 
 .main-content h2 {
-    font-size: 26px;
+    font-size: 30px;
     font-weight: 600;
     margin-bottom: 20px;
-    color: #203354;
+    color: #3f6099;
+    font-family: 'Raleway', sans-serif;
 }
+
+/*----------------------------------------------------------------------------------------------- */
 
 .card {
     background-color: white;
@@ -162,7 +195,8 @@ body {
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
 
-/* Footer */
+/*----------------------------------------------------------------------------------------------- */
+
 .footer {
     position: fixed;
     bottom: 0;
@@ -175,6 +209,7 @@ body {
     align-items: center;
     justify-content: center;
     font-size: 14px;
+    font-family: 'Lora', sans-serif;
     transition: left 0.3s ease-in-out, width 0.3s ease-in-out;
 }
 
@@ -182,6 +217,41 @@ body {
     left: 0;
     width: 100%;
 }
+
+/*----------------------------------------------------------------------------------------------- */
+
+.logout {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-right: 1px;
+}
+
+.logout-btn {
+    background-color: #1b2e41;
+    color: white;
+    border: none;
+    border-radius: 12px; 
+    padding: 8px 12px;
+    font-size: 14px;
+    font-family: 'Raleway', sans-serif;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px; 
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.logout-btn i {
+    font-size: 16px; 
+}
+
+.logout-btn:hover {
+    background-color: #f14444; 
+    transform: scale(1.05); 
+}
+
+/*----------------------------------------------------------------------------------------------- */
 
 @keyframes fadeIn {
     0% {
