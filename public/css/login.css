@@ -19,6 +19,8 @@ body {
   animation: fadeIn 0.5s ease;
 }
 
+/*----------------------------------------------------------------------------------------------- */
+
 .login-wrapper {
   position: relative;
 }
@@ -59,6 +61,43 @@ body {
   margin-bottom: 20px;
 }
 
+/*----------------------------------------------------------------------------------------------- */
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.input-wrapper i {
+  position: absolute;
+  left: 15px;
+  font-size: 16px;
+  color: #888;
+}
+
+.input-wrapper input[type="text"],
+.input-wrapper input[type="password"] {
+  padding-left: 40px; 
+  width: 100%;
+  height: 40px;
+  border: none;
+  border-radius: 15px;
+  font-size: 14px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.input-wrapper input[type="text"]:focus,
+.input-wrapper input[type="password"]:focus {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(32, 51, 84, 0.5);
+  border: 2px solid #203354;
+  outline: none;
+}
+
+/*----------------------------------------------------------------------------------------------- */
+
 form {
   display: flex;
   flex-direction: column;
@@ -69,6 +108,8 @@ label {
   margin-bottom: 5px;
   text-transform: lowercase;
 }
+
+/*----------------------------------------------------------------------------------------------- */
 
 input[type="text"],
 input[type="password"] {
@@ -88,6 +129,8 @@ input[type="password"]:focus {
   outline: none; 
 }
 
+/*----------------------------------------------------------------------------------------------- */
+
 button {
     padding: 10px;
     border: none;
@@ -100,9 +143,12 @@ button {
   }
   
   button:hover {
-    background-color: #ccc;
+    background-color: #2b9959;
+    color: #ffffff;
     transform: scale(1.1); 
   }
+
+  /*----------------------------------------------------------------------------------------------- */
   
   .bottom-logo {
     position: absolute;
@@ -123,6 +169,8 @@ button {
     opacity: 1; 
   }
   
+  /*----------------------------------------------------------------------------------------------- */
+
   @keyframes float {
     0%, 100% {
       transform: translateY(0);
