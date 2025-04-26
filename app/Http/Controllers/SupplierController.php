@@ -35,4 +35,27 @@ class SupplierController extends Controller
 
         return redirect()->route('suppliers.index')->with('success', 'Supplier added successfully!');
     }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'number' => 'required|string|max:15',
+            'contact_person' => 'required|string|max:255',
+        ]);
+
+        $supplier = Supplier::findOrFail($id);
+        $supplier->update($request->all());
+
+        return redirect()->route('suppliers.index')->with('success', 'Supplier updated successfully!');
+    }
+
+    public function destroy($id)
+    {
+        $supplier = Supplier::findOrFail($id);
+        $supplier->delete();
+
+        return redirect()->route('suppliers.index')->with('success', 'Supplier deleted successfully!');
+    }
 }

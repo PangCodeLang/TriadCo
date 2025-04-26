@@ -17,10 +17,24 @@ class DashboardController extends Controller
             'reports' => 'reports.index',
         ];
 
+        // Role-based access control
+        if (auth()->user()->role === 'employee') {
+            // Employees can only access specific sections
+            $allowedSections = ['suppliers', 'stock-in', 'inventory', 'rooms'];
+            if (!in_array($section, $allowedSections)) {
+                abort(403, 'Unauthorized');
+            }
+        }
+
         if (array_key_exists($section, $views)) {
             return view($views[$section]);
         }
 
         return response()->json(['error' => 'Section not found'], 404);
+    }
+    public function index()
+    {
+                $employee = Employee::where('user_id', Auth::id())->first();
+        return view('dashboard', compact('employee'));
     }
 }

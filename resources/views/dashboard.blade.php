@@ -1,3 +1,4 @@
+<!-- filepath: c:\Users\jarma\Documents\TriadCo\TriadCo\resources\views\dashboard.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,18 +14,24 @@
 <body class="{{ session('first_login') ? 'fade-in' : '' }}">
     @php
         session()->forget('first_login');
-    @endphp>
-    
+        $user = Auth::user();
+        $profilePicture = $user->name === 'Admin' ? 'TCAdminProfile.png' : 'default-profile.jpg';
+    @endphp
+
     <div class="sidebar" id="sidebar">
-        <h2>TriadCo Dashboard</h2>
+        <h2>TriadCo. Dashboard</h2>
         <center>
             <ul>
-                <li><a href="{{ route('dashboard') }}" class="nav-link">Dashboard</a></li>
+                @if(auth()->user()->role === 'admin')
+                    <li><a href="{{ route('dashboard') }}" class="nav-link">Dashboard</a></li>
+                @endif
                 <li><a href="#!" class="nav-link">Stock-In</a></li>
                 <li><a href="#!" class="nav-link">Inventory</a></li>
                 <li><a href="#!" class="nav-link">Rooms</a></li>
                 <li><a href="{{ route('suppliers.index') }}" class="nav-link">Suppliers</a></li>
-                <li><a href="#!" class="nav-link">Reports</a></li>
+                @if(auth()->user()->role === 'admin')
+                    <li><a href="#!" class="nav-link">Reports</a></li>
+                @endif
             </ul>
         </center>
         <div class="sidebar-logo">
@@ -35,13 +42,108 @@
     <div class="header">
         <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
         <h1>Triad Corporations Hotel Set-Up</h1>
-        <div class="logout">
-            <form action="{{ route('logout') }}" method="GET" style="display: inline;">
-                @csrf
-                <button type="submit" class="logout-btn">
-                    <i class="bi bi-box-arrow-left"></i> Log-Out
-                </button>
-            </form>
+        <div class="user-profile">
+            <span>Welcome, {{ $user->name }}!</span>
+            <div class="profile-picture" onclick="toggleDropdown()">
+                <img src="{{ Auth::user()->role === 'employee' ? asset('images/TCEmployeeProfile.png') : asset('images/' . $profilePicture) }}" alt="Profile Picture">            </div>
+            <div class="dropdown-menu hidden" id="dropdownMenu">
+                <button class="dropdown-item" onclick="toggleModal('viewProfileModal')">View Profile</button>
+                
+                @if(Auth::user()->role === 'admin')
+                    <button class="dropdown-item" onclick="toggleModal('createEmployeeModal')">Create Employee Account</button>
+                @endif
+
+                <form action="{{ route('logout') }}" method="GET" style="display: inline;">
+                    @csrf
+                    <button type="submit" class="logout-btn dropdown-item">Log-Out</button>
+                </form>
+            </div>
+
+            <!-- View Profile Modal -->
+            <div class="modal hidden" id="viewProfileModal">
+                <div class="modal-content">
+                    <h2>Profile</h2>
+                    <p><strong>Name:</strong> {{ Auth::user()->name }}</p>
+                    <p><strong>Email:</strong> {{ Auth::user()->email }}</p>
+                    <p><strong>Role:</strong> {{ ucfirst(Auth::user()->role) }}</p>
+                    <button class="close-btn" onclick="toggleModal('viewProfileModal')">Close</button>
+                </div>
+            </div>
+
+            <!-- Create Employee Account Modal -->
+            @if(Auth::user()->role === 'admin')
+            <div class="modal hidden" id="createEmployeeModal">
+                <div class="modal-content fade-in">
+                    <h2>Register Employee</h2>
+                    <form action="{{ route('employees.store') }}" method="POST" enctype="multipart/form-data" style="font-family: 'system-font'; padding: 20px;">
+                        @csrf
+                        <!-- Account Information -->
+                        <h3 style="margin-bottom: 10px;">Account Information</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="name">Name:</label>
+                                <input type="text" id="name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email:</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="password">Password:</label>
+                                <input type="password" id="password" name="password" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password_confirmation">Confirm Password:</label>
+                                <input type="password" id="password_confirmation" name="password_confirmation" required>
+                            </div>
+                        </div>
+
+                        <!-- Employee Information -->
+                        <h3 style="margin-top: 20px; margin-bottom: 10px;">Employee Information</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="first_name">First Name:</label>
+                                <input type="text" id="first_name" name="first_name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="last_name">Last Name:</label>
+                                <input type="text" id="last_name" name="last_name" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group" style="width: 100%;">
+                                <label for="address">Address:</label>
+                                <input type="text" id="address" name="address" required style="width: 100%;">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contact_number">Contact Number:</label>
+                                <input type="text" id="contact_number" name="contact_number" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="sss_number">SSS Number:</label>
+                                <input type="text" id="sss_number" name="sss_number" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group" style="width: 100%;">
+                                <label for="profile_picture">Upload Profile Picture:</label>
+                                <input type="file" id="profile_picture" name="profile_picture" accept="image/*" style="width: 100%;">
+                            </div>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="form-actions" style="text-align: center; margin-top: 20px;">
+                            <button type="submit" class="btn-primary">Register Employee</button>
+                            <button type="button" class="btn-secondary" onclick="toggleModal('createEmployeeModal', 'close')">Close</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            @endif
         </div>
     </div>
 
@@ -56,7 +158,59 @@
     <script>
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('hidden');
+            if (sidebar.classList.contains('hidden')) {
+                sidebar.classList.remove('hidden');
+                setTimeout(() => {
+                    sidebar.style.transform = 'translateX(0)'; 
+                    sidebar.classList.add('sidebar-animation'); 
+                }, 10); 
+            } else {
+                sidebar.classList.remove('sidebar-animation');
+                sidebar.style.transform = 'translateX(-100%)';
+                setTimeout(() => {
+                    sidebar.classList.add('hidden'); 
+                }, 10); 
+            }
+        }
+    
+        function toggleDropdown() {
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            
+            if (dropdownMenu.classList.contains('hidden')) {
+                dropdownMenu.classList.remove('hidden');
+                setTimeout(() => {
+                    dropdownMenu.classList.add('dropdown-animation');
+                }, 10); 
+            } else {
+                dropdownMenu.classList.remove('dropdown-animation');
+                setTimeout(() => {
+                    dropdownMenu.classList.add('hidden');
+                }, 300);
+            }
+        }
+        
+        function toggleModal(modalId, action = 'toggle') {
+            const modal = document.getElementById(modalId);
+
+            if (action === 'open') {
+                modal.classList.remove('hidden');
+                modal.classList.add('show');
+            } else if (action === 'close') {
+                const modalContent = modal.querySelector('.modal-content');
+                modalContent.classList.add('fade-out');
+
+                setTimeout(() => {
+                    modal.classList.remove('show');
+                    modal.classList.add('hidden');
+                    modalContent.classList.remove('fade-out');
+                }, 500);
+            } else {
+                if (modal.classList.contains('hidden')) {
+                    toggleModal(modalId, 'open');
+                } else {
+                    toggleModal(modalId, 'close');
+                }
+            }
         }
     </script>
 </body>

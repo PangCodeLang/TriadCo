@@ -10,7 +10,11 @@ class AuthController extends Controller
     public function showLoginForm()
     {
         if (Auth::check()) {
-            return redirect()->route('dashboard');
+            if (Auth::user()->role === 'admin') {
+                return redirect()->route('dashboard'); 
+            } elseif (Auth::user()->role === 'employee') {
+                return redirect()->route('suppliers.index'); 
+            }
         }
         return view('login.login');
     }
@@ -23,9 +27,14 @@ class AuthController extends Controller
         ]);
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            $request->session()->put('first_login', true);
-            return redirect()->intended(route('dashboard'));
+            session(['first_login' => true]);
+            if (Auth::user()->role === 'admin') {
+                return redirect()->route('dashboard');
+            } elseif (Auth::user()->role === 'employee') {
+                return redirect()->route('suppliers.index');
+            }
         }
+
         return back()->withErrors([
             'name' => 'The provided credentials do not match our records.',
         ])->withInput();
@@ -37,5 +46,11 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect()->route('login');
+    }
+    
+    public function viewProfile()
+    {
+        $user = Auth::user();
+        return view('profile.view', compact('user'));
     }
 }
