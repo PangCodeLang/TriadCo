@@ -1,0 +1,344 @@
+body {
+    background: url('/images/triadco-background.png') no-repeat center center fixed;
+    background-size: cover;
+}
+
+/*----------------------------------------------------------------------------------------------- */
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 30px;
+}
+.glass-card-wide {
+    max-width: 1400px;
+}
+
+/*----------------------------------------------------------------------------------------------- */
+
+.card-header-custom {
+    background-color: #1e2a47;
+    color: white;
+    border-radius: 15px 15px 0 0;
+    padding: 15px;
+    font-size: 1.25rem;
+}
+.btn-gold {
+    background-color: #c8a858;
+    color: white;
+    font-weight: bold;
+}
+.btn-gold:hover {
+    background-color: #b89548;
+}
+
+/*----------------------------------------------------------------------------------------------- */
+
+label {
+    font-weight: 500;
+    color: #1e2a47;
+}
+.form-input {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+}
+.form-input:focus {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: #c8a858;
+    box-shadow: 0 0 0 0.25rem rgba(200, 168, 88, 0.25);
+}
+.form-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+.btn-cancel {
+    color: #6c757d;
+    font-weight: bold;
+    text-decoration: none;
+}
+.btn-cancel:hover {
+    color: #5a6268;
+}
+
+.alert {
+    margin-bottom: 20px;
+}
+
+/*----------------------------------------------------------------------------------------------- */
+
+.btn-add-supplier {
+    background-color: #1b2e41; 
+    color: white; 
+    font-weight: bold;
+    font-size: 0.9rem; 
+    padding: 10px; 
+    border: none;
+    border-radius: 8px;
+    width: 100%; 
+    transition: background-color 0.3s ease, transform 0.3s ease; 
+    margin-bottom: 15px; 
+}
+
+.btn-add-supplier:hover {
+    background-color: #006400; 
+    color: white; 
+    transform: scale(1.02); 
+}
+
+/*----------------------------------------------------------------------------------------------- */
+
+.supplier-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1050;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0.3s ease, opacity 0.3s ease; 
+}
+
+.supplier-modal-content {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    width: 500px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.3s ease; 
+}
+
+.supplier-modal-header {
+    background-color: #1e2a47; 
+    color: white; 
+    font-family: 'Raleway', sans-serif; 
+    font-size: 1.5rem;
+    text-align: center;
+    padding: 15px;
+    border-radius: 10px 10px 10px 10px; 
+    width: 100%; 
+    margin-bottom: 15px; 
+}
+
+.modal-body {
+    text-align: center;
+}
+
+.supplier-modal .form-label {
+    font-weight: bold;
+    color: #1e2a47;
+    margin-bottom: 5px;
+    display: block; 
+}
+
+.supplier-modal .form-control {
+    border-radius: 8px; 
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 15px; 
+    width: 100%; 
+    text-align: left; 
+}
+
+.supplier-modal .form-control:focus {
+    border-color: #c8a858;
+    box-shadow: 0 0 0 0.25rem rgba(200, 168, 88, 0.25);
+}
+
+.supplier-modal .button-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.supplier-modal .btn-add {
+    background-color: #28a745; 
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    width: 75%; 
+    transition: background-color 0.3s ease, transform 0.3s ease; 
+}
+
+.supplier-modal .btn-add:hover {
+    background-color: #218838; 
+    transform: scale(1.05); 
+}
+
+.supplier-modal .btn-cancel {
+    background-color: #d6d6d6; 
+    color: #6c757d; 
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    width: 23%; 
+    transition: background-color 0.3s ease, transform 0.3s ease; 
+}
+
+.supplier-modal .btn-cancel:hover {
+    background-color: #dc3545; 
+    color: white; 
+    transform: scale(1.05); 
+}
+
+.supplier-modal.show {
+    visibility: visible;
+    opacity: 1;
+}
+.supplier-modal.hide {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0.3s ease, opacity 0.3s ease; 
+}
+
+/*----------------------------------------------------------------------------------------------- */
+
+.supplier-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.supplier-table .form-control-sm {
+    border-radius: 8px; 
+    padding: 5px 10px;
+    width: 250px; 
+}
+
+.supplier-table .btn-sm {
+    border-radius: 8px; 
+    padding: 5px 15px;
+}
+
+.supplier-table th,
+.supplier-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.supplier-table th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+}
+
+.supplier-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/*----------------------------------------------------------------------------------------------- */
+
+form .form-control-sm {
+    border-radius: 8px; 
+    padding: 5px 10px;
+}
+
+form .btn-sm {
+    border-radius: 8px; 
+    padding: 5px 15px;
+}
+
+/*-----------------------------------------------------------------------------------------------*/
+
+.d-flex.gap-2 {
+    display: flex;
+    gap: 8px;
+    justify-content: center; 
+}
+
+.btn-edit {
+    background-color: #ffc107; 
+    color: white;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px; 
+    height: 40px;
+    border-radius: 8px; 
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-edit:hover {
+    background-color: #ffcd39; 
+    transform: scale(1.05); 
+}
+
+.btn-delete {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px; 
+    height: 40px;
+    border-radius: 8px; 
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-delete:hover {
+    background-color: #e4606d; 
+    transform: scale(1.05);
+}
+
+.btn-update {
+    background-color: #ddc686; 
+    color: rgb(28, 34, 51);
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    width: 50%; 
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-update:hover {
+    background-color: #e9da0e;
+    transform: scale(1.05); 
+}
+
+.btn-canceledit {
+    background-color: #d6d6d6; 
+    color: #6c757d; 
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    width: 23%; 
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-canceledit:hover {
+    background-color: #e4606d; 
+    color: white;
+    transform: scale(1.05); 
+}
+
+/*----------------------------------------------------------------------------------------------- */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

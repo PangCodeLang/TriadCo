@@ -1,130 +1,108 @@
-<!-- filepath: c:\Users\jarma\Documents\TriadCo\TriadCo\resources\views\suppliers\index.blade.php -->
 @extends('dashboard')
 
 @section('title', 'Suppliers - TriadCo')
 
+@section('head')
+    <link href="{{ asset('css/supplier.css') }}" rel="stylesheet">
+@endsection
+
 @section('content')
-
-    <h2 class="mb-4">SUPPLIERS</h2>
-
+<div class="container py-5">
+    <h2>SUPPLIERS</h2>
     <div class="mb-4">
-        <a href="#!" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSupplierModal">Add Supplier</a>
+        <button class="btn btn-add-supplier w-100" onclick="toggleModal('addSupplierModal', 'open')">
+            Add Supplier
+        </button>
     </div>
 
-    <div class="table-responsive">
-        @if($suppliers->isEmpty())
-            <div class="text-center">
-                <p class="text-muted">Table Empty</p>
-                <img src="{{ asset('images/TCLogo3.png') }}" alt="TriadCo Logo" class="empty-table-logo">
+    <!-- Modal -->
+    <div class="supplier-modal hidden" id="addSupplierModal">
+        <div class="modal-content">
+            <div class="supplier-modal-header">
+                Supplier Information
             </div>
-        @else
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>ID</th> <!-- Added custom ID column -->
-                        <th>Name</th>
-                        <th>Contact Number</th>
-                        <th>Address</th>
-                        <th>Contact Person</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($suppliers as $supplier)
-                        <tr>
-                            <td>{{ $supplier->custom_id }}</td> <!-- Display custom ID -->
-                            <td>{{ $supplier->name }}</td>
-                            <td>{{ $supplier->number }}</td>
-                            <td>{{ $supplier->address }}</td>
-                            <td>{{ $supplier->contact_person }}</td>
-                            <td>
-                                <a href="#!" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editSupplierModal{{ $supplier->id }}">Edit</a>
-                                <form action="{{ route('suppliers.destroy', $supplier->id) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                </form>
-                            </td>
-                        </tr>
-
-                        <!-- Edit Supplier Modal -->
-                        <div class="modal fade" id="editSupplierModal{{ $supplier->id }}" tabindex="-1" aria-labelledby="editSupplierModalLabel{{ $supplier->id }}" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <form action="{{ route('suppliers.update', $supplier->id) }}" method="POST">
-                                        @csrf
-                                        @method('PUT')
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="editSupplierModalLabel{{ $supplier->id }}">Edit Supplier</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="mb-3">
-                                                <label for="name" class="form-label">Name</label>
-                                                <input type="text" class="form-control" id="name" name="name" value="{{ $supplier->name }}" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="address" class="form-label">Address</label>
-                                                <input type="text" class="form-control" id="address" name="address" value="{{ $supplier->address }}" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="number" class="form-label">Contact Number</label>
-                                                <input type="text" class="form-control" id="number" name="number" value="{{ $supplier->number }}" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="contact_person" class="form-label">Contact Person</label>
-                                                <input type="text" class="form-control" id="contact_person" name="contact_person" value="{{ $supplier->contact_person }}" required>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-primary">Save Changes</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </tbody>
-            </table>
-        @endif
-    </div>
-
-    <!-- Add Supplier Modal -->
-    <div class="modal fade" id="addSupplierModal" tabindex="-1" aria-labelledby="addSupplierModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
+            <div class="modal-body">
                 <form action="{{ route('suppliers.store') }}" method="POST">
                     @csrf
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="addSupplierModalLabel">Add Supplier</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Supplier Name</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter supplier name" required>
                     </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Name</label>
-                            <input type="text" class="form-control" id="name" name="name" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="address" class="form-label">Address</label>
-                            <input type="text" class="form-control" id="address" name="address" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="number" class="form-label">Contact Number</label>
-                            <input type="text" class="form-control" id="number" name="number" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="contact_person" class="form-label">Contact Person</label>
-                            <input type="text" class="form-control" id="contact_person" name="contact_person" required>
-                        </div>
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Supplier Address</label>
+                        <input type="text" class="form-control" id="address" name="address" placeholder="Enter address" required>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Add Supplier</button>
+                    <div class="mb-3">
+                        <label for="number" class="form-label">Phone Number</label>
+                        <input type="text" class="form-control" id="number" name="number" placeholder="Enter phone number" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="contact_person" class="form-label">Contact Person</label>
+                        <input type="text" class="form-control" id="contact_person" name="contact_person" placeholder="Enter contact person" required>
+                    </div>
+
+                    <div class="button-row">
+                        <button type="submit" class="btn-add">Add Supplier</button>
+                        <button type="button" class="btn-cancel" onclick="toggleModal('addSupplierModal', 'close')">Cancel</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
+    <!-- Supplier Table -->
+    <div class="glass-card glass-card-wide mx-auto">
+        <div class="table-responsive mt-2">
+            <table class="table table-bordered table-striped align-middle supplier-table">
+                <thead class="table-light">
+                    <tr>
+                        <th colspan="6">
+                            <form action="{{ route('suppliers.index') }}" method="GET" class="d-flex justify-content-end">
+                                <input type="text" name="search" class="form-control form-control-sm me-2" placeholder="Search suppliers..." />
+                                <button type="submit" class="btn btn-sm btn-primary">Search</button>
+                            </form>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>Supplier ID</th>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>Phone Number</th>
+                        <th>Contact Person</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($suppliers as $supplier)
+                        <tr>
+                            <td>{{ $supplier->supplier_id }}</td>
+                            <td>{{ $supplier->name }}</td>
+                            <td>{{ $supplier->address }}</td>
+                            <td>{{ $supplier->number }}</td>
+                            <td>{{ $supplier->contact_person }}</td>
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <a href="{{ route('suppliers.edit', $supplier->supplier_id) }}" class="btn btn-edit">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                    <form action="{{ route('suppliers.destroy', $supplier->supplier_id) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-delete" onclick="return confirm('Are you sure you want to delete this supplier?')">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="6" class="text-center text-muted">No suppliers found.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 @endsection

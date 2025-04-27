@@ -9,6 +9,7 @@
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <link href="{{ asset('css/system.css') }}" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    @yield('head')
 </head>
 
 <body class="{{ session('first_login') ? 'fade-in' : '' }}">
@@ -58,8 +59,6 @@
                     <button type="submit" class="logout-btn dropdown-item">Log-Out</button>
                 </form>
             </div>
-
-            <!-- View Profile Modal -->
             <div class="modal hidden" id="viewProfileModal">
                 <div class="modal-content">
                     <h2>Profile</h2>
@@ -69,15 +68,12 @@
                     <button class="close-btn" onclick="toggleModal('viewProfileModal')">Close</button>
                 </div>
             </div>
-
-            <!-- Create Employee Account Modal -->
             @if(Auth::user()->role === 'admin')
             <div class="modal hidden" id="createEmployeeModal">
                 <div class="modal-content fade-in">
                     <h2>Register Employee</h2>
                     <form action="{{ route('employees.store') }}" method="POST" enctype="multipart/form-data" style="font-family: 'system-font'; padding: 20px;">
                         @csrf
-                        <!-- Account Information -->
                         <h3 style="margin-bottom: 10px;">Account Information</h3>
                         <div class="form-row">
                             <div class="form-group">
@@ -100,7 +96,6 @@
                             </div>
                         </div>
 
-                        <!-- Employee Information -->
                         <h3 style="margin-top: 20px; margin-bottom: 10px;">Employee Information</h3>
                         <div class="form-row">
                             <div class="form-group">
@@ -135,7 +130,6 @@
                             </div>
                         </div>
 
-                        <!-- Buttons -->
                         <div class="form-actions" style="text-align: center; margin-top: 20px;">
                             <button type="submit" class="btn-primary">Register Employee</button>
                             <button type="button" class="btn-secondary" onclick="toggleModal('createEmployeeModal', 'close')">Close</button>
