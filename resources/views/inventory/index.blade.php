@@ -25,8 +25,7 @@
                 Add Item
             </div>
             <div class="modal-body">
-                <!-- Corrected form action to include stockin_id -->
-                <form action="{{ route('inventory.store', ['stockin_id' => $stockIn->stockin_id ?? 'default_stockin_id']) }}" method="POST">
+                <form action="{{ route('inventory.store') }}" method="POST">
                     @csrf
                     <div class="mb-3">
                         <label for="name" class="form-label">Item Name</label>
@@ -40,19 +39,6 @@
                                 <option value="{{ $category->itemctgry_id }}">{{ $category->name }}</option>
                             @endforeach
                         </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="stockin_id" class="form-label">Stock-In ID</label>
-                        <select class="form-control" id="stockin_id" name="stockin_id" required>
-                            <option value="" disabled selected>Select a stock-in record</option>
-                            @foreach($stockIns as $stockIn)
-                                <option value="{{ $stockIn->stockin_id }}">{{ $stockIn->stockin_id }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="quantity" class="form-label">Quantity</label>
-                        <input type="number" class="form-control" id="quantity" name="quantity" placeholder="Enter quantity" required>
                     </div>
                     <div class="mb-3">
                         <label for="price" class="form-label">Price</label>
@@ -74,11 +60,10 @@
                 <thead class="table-light">
                     <tr>
                         <th>Item ID</th>
-                        <th>Stock-In ID</th>
                         <th>Category</th>
                         <th>Item Name</th>
                         <th>Price</th>
-                        <th>Quantity</th>
+                        <th>In Stock</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -86,11 +71,16 @@
                     @forelse($items as $item)
                         <tr>
                             <td>{{ $item->item_id }}</td>
-                            <td>{{ $item->stockin_id }}</td>
                             <td>{{ $item->category->name }}</td>
                             <td>{{ $item->name }}</td>
                             <td>{{ number_format($item->price, 2) }}</td>
-                            <td>{{ $item->quantity }}</td>
+                            <td>
+                                @if ($item->in_stock > 0)
+                                    {{ $item->in_stock }}
+                                @else
+                                    <span class="text-danger">No Stock</span>
+                                @endif
+                            </td>
                             <td>
                                 <div class="d-flex gap-2">
                                     <a href="{{ route('inventory.edit', $item->item_id) }}" class="btn btn-edit">
@@ -108,7 +98,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="text-center">No items found.</td>
+                            <td colspan="6" class="text-center">No items found.</td>
                         </tr>
                     @endforelse
                 </tbody>

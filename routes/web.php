@@ -34,10 +34,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/stock_in', [StockInController::class, 'index'])->name('stock_in.index');
     Route::get('/stock_in/create', [StockInController::class, 'create'])->name('stock_in.create');
     Route::post('/stock_in', [StockInController::class, 'store'])->name('stock_in.store');
-
+    Route::get('/stock_in/{id}/edit', [StockInController::class, 'edit'])->name('stock_in.edit');
+    Route::put('/stock_in/{id}', [StockInController::class, 'update'])->name('stock_in.update');
+    Route::delete('/stock_in/{id}', [StockInController::class, 'destroy'])->name('stock_in.destroy');
+    
     Route::get('/inventory', [ItemController::class, 'index'])->name('inventory.index'); 
-    Route::get('/inventory/create/{stockin_id}', [ItemController::class, 'create'])->name('inventory.create'); 
-    Route::post('/inventory/{stockin_id}', [ItemController::class, 'store'])->name('inventory.store'); 
+    Route::post('/inventory', [ItemController::class, 'store'])->name('inventory.store'); // Removed stockin_id
     Route::get('/inventory/{id}/edit', [ItemController::class, 'edit'])->name('inventory.edit');
     Route::put('/inventory/{id}', [ItemController::class, 'update'])->name('inventory.update'); 
     Route::delete('/inventory/{id}', [ItemController::class, 'destroy'])->name('inventory.destroy'); 

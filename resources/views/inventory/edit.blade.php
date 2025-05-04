@@ -48,25 +48,6 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="stockin_id" class="form-label">Stock-In ID</label>
-                    <select class="form-control" id="stockin_id" name="stockin_id" required>
-                        @foreach($stockIns as $stockIn)
-                            <option value="{{ $stockIn->stockin_id }}" 
-                                {{ $item->stockin_id == $stockIn->stockin_id ? 'selected' : '' }}>
-                                {{ $stockIn->stockin_id }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="mb-3">
-                    <label for="quantity" class="form-label">Quantity</label>
-                    <input type="number" class="form-control form-input" id="quantity" name="quantity" 
-                           value="{{ old('quantity', $item->quantity) }}" 
-                           placeholder="Enter quantity" required>
-                </div>
-
-                <div class="mb-3">
                     <label for="price" class="form-label">Price</label>
                     <input type="number" step="0.01" class="form-control form-input" id="price" name="price" 
                            value="{{ old('price', $item->price) }}" 

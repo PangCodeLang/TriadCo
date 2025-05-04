@@ -12,14 +12,12 @@ return new class extends Migration
             $table->string('item_id')->unique(); // Unique item ID
             $table->string('name'); // Item name
             $table->string('category_id'); // Foreign key to item_categories
-            $table->string('stockin_id'); // Foreign key to stock_in table
-            $table->integer('quantity')->default(0); // Quantity of the item
+            $table->integer('in_stock')->default(0); // Renamed from 'quantity' to 'in_stock'
             $table->decimal('price', 10, 2); // Price of the item
             $table->timestamps();
 
-            // Foreign key constraints
+            // Foreign key constraint
             $table->foreign('category_id')->references('itemctgry_id')->on('item_categories')->onDelete('cascade');
-            $table->foreign('stockin_id')->references('stockin_id')->on('stock_in')->onDelete('cascade');
         });
     }
 

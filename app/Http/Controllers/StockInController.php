@@ -3,69 +3,113 @@
 namespace App\Http\Controllers;
 
 use App\Models\StockIn;
-use App\Models\Supplier;
 use App\Models\Item;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class StockInController extends Controller
 {
     public function index()
     {
-        $user = Auth::user();
+        // Fetch all stock-in records with related items
+        $stockIns = StockIn::with('item')->get();
 
-        // Admin sees all stock-ins, employees see only their own
-        $stockIns = $user->role === 'admin'
-            ? StockIn::with(['supplier', 'items'])->get() // Ensure items are loaded
-            : StockIn::with(['supplier', 'items'])->where('id', $user->id)->get();
+        // Fetch all items for the dropdown in the add stock-in form
+        $items = Item::all();
 
-        return view('stock_in.index', compact('stockIns'));
+        return view('stock_in.index', compact('stockIns', 'items'));
     }
 
     public function create()
     {
-        $suppliers = Supplier::all(); // Get all suppliers for the dropdown
-        return view('stock_in.create', compact('suppliers'));
+        // Fetch all items for the dropdown in the add stock-in form
+        $items = Item::all();
+
+        return view('stock_in.create', compact('items'));
     }
 
     public function store(Request $request)
     {
+        // Validate the request
         $validated = $request->validate([
-            'supplier_id' => 'required|exists:suppliers,supplier_id',
-            'stock_in_date' => 'required|date',
-            'items' => 'nullable|array', 
-            'items.*.name' => 'nullable|string|max:255', 
-            'items.*.price' => 'nullable|numeric|min:0', 
-            'items.*.quantity' => 'nullable|integer|min:1', 
+            'item_id' => 'required|exists:items,item_id',
+            'quantity' => 'required|integer|min:1',
+            'stockin_date' => 'required|date',
         ]);
 
-        // Generate Stock-In ID
-        $lastStockIn = StockIn::latest('stockin_id')->first();
-        $customId = $lastStockIn ? 'SI' . str_pad((int) substr($lastStockIn->stockin_id, 2) + 1, 3, '0', STR_PAD_LEFT) : 'SI001';
+        // Fetch the item to get its price
+        $item = Item::findOrFail($validated['item_id']);
+        $price = $item->price;
+        $totalPrice = $price * $validated['quantity'];
 
-        // Create the Stock-In record
-        $stockIn = StockIn::create([
-            'stockin_id' => $customId,
-            'supplier_id' => $validated['supplier_id'],
-            'id' => Auth::id(),
-            'stock_in_date' => $validated['stock_in_date'],
+        // Create the stock-in record
+        StockIn::create([
+            'item_id' => $validated['item_id'],
+            'quantity' => $validated['quantity'],
+            'price' => $price,
+            'total_price' => $totalPrice,
+            'stockin_date' => $validated['stockin_date'],
         ]);
 
-        // Create the associated items (only if valid items are provided)
-        if (!empty($validated['items'])) {
-            foreach ($validated['items'] as $item) {
-                if (!empty($item['name']) && !empty($item['price']) && !empty($item['quantity'])) {
-                    Item::create([
-                        'item_id' => 'IT' . str_pad(Item::count() + 1, 3, '0', STR_PAD_LEFT),
-                        'stockin_id' => $stockIn->stockin_id,
-                        'name' => $item['name'],
-                        'price' => $item['price'],
-                        'quantity' => $item['quantity'],
-                    ]);
-                }
-            }
-        }
+        // Update the item's in_stock value
+        $item->increment('in_stock', $validated['quantity']);
 
-        return redirect()->route('stock_in.index')->with('success', 'Stock-In added successfully!');
+        return redirect()->route('stock_in.index')->with('success', 'Stock-In record added successfully!');
+    }
+
+    public function edit($id)
+    {
+        // Fetch the stock-in record and related data
+        $stockIn = StockIn::findOrFail($id);
+        $items = Item::all();
+
+        return view('stock_in.edit', compact('stockIn', 'items'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        // Validate the request
+        $validated = $request->validate([
+            'item_id' => 'required|exists:items,item_id',
+            'quantity' => 'required|integer|min:1',
+            'stockin_date' => 'required|date',
+        ]);
+
+        // Fetch the stock-in record and related item
+        $stockIn = StockIn::findOrFail($id);
+        $item = Item::findOrFail($validated['item_id']);
+
+        // Revert the previous stock-in quantity from the item's in_stock
+        $item->decrement('in_stock', $stockIn->quantity);
+
+        // Update the stock-in record
+        $price = $item->price;
+        $totalPrice = $price * $validated['quantity'];
+        $stockIn->update([
+            'item_id' => $validated['item_id'],
+            'quantity' => $validated['quantity'],
+            'price' => $price,
+            'total_price' => $totalPrice,
+            'stockin_date' => $validated['stockin_date'],
+        ]);
+
+        // Update the item's in_stock value with the new quantity
+        $item->increment('in_stock', $validated['quantity']);
+
+        return redirect()->route('stock_in.index')->with('success', 'Stock-In record updated successfully!');
+    }
+
+    public function destroy($id)
+    {
+        // Fetch the stock-in record and related item
+        $stockIn = StockIn::findOrFail($id);
+        $item = Item::findOrFail($stockIn->item_id);
+
+        // Revert the stock-in quantity from the item's in_stock
+        $item->decrement('in_stock', $stockIn->quantity);
+
+        // Delete the stock-in record
+        $stockIn->delete();
+
+        return redirect()->route('stock_in.index')->with('success', 'Stock-In record deleted successfully!');
     }
 }
