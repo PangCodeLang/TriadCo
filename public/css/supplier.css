@@ -91,6 +91,43 @@ label {
     transform: scale(1.02); 
 }
 
+.btn-page-link {
+    background-color: #455564; 
+    color: white; 
+    font-weight: bold;
+    font-size: 0.9rem; 
+    padding: 10px; 
+    border: none;
+    border-radius: 8px;
+    width: 100%; 
+    transition: background-color 0.3s ease, transform 0.3s ease; 
+    margin-bottom: 15px; 
+}
+
+.btn-page-link:hover {
+    background-color: #ddc686; 
+    color: #1b2e41; 
+    transform: scale(1.02); 
+}
+
+.btn-back {
+    background-color: #878d92; 
+    color: rgb(0, 0, 0); 
+    font-weight: bold;
+    font-size: 0.9rem; 
+    padding: 10px; 
+    border: none;
+    border-radius: 8px;
+    width: 100%; 
+    transition: background-color 0.3s ease, transform 0.3s ease; 
+    margin-bottom: 15px; 
+}
+
+.btn-back:hover {
+    background-color: #52534f; 
+    color: #ffffff; 
+    transform: scale(1.02); 
+}
 /*----------------------------------------------------------------------------------------------- */
 
 .supplier-modal {
@@ -241,6 +278,46 @@ label {
 
 /*----------------------------------------------------------------------------------------------- */
 
+.employee-edit h2,
+.employee-edit h4 {
+    font-size: 1.5rem;
+    color: #1e2a47; 
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.employee-edit .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.employee-edit .btn {
+    margin-right: 0.5rem;
+}
+
+.employee-edit .btn-primary {
+    background-color: #1e2a47;
+    color: white;
+    font-weight: bold;
+    border-radius: 8px;
+}
+
+.employee-edit .btn-primary:hover {
+    background-color: #162033;
+}
+
+.employee-edit .btn-secondary {
+    background-color: #d6d6d6;
+    color: #6c757d;
+    font-weight: bold;
+    border-radius: 8px;
+}
+
+.employee-edit .btn-secondary:hover {
+    background-color: #b5b5b5;
+}
+
+/*----------------------------------------------------------------------------------------------- */
+
 form .form-control-sm {
     border-radius: 8px; 
     padding: 5px 10px;
@@ -330,6 +407,27 @@ form .btn-sm {
     transform: scale(1.05); 
 }
 
+.stock-in-card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.stock-in-card h4 {
+    margin-bottom: 15px;
+}
+
+.stock-in-card ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.stock-in-card ul li {
+    margin-bottom: 5px;
+}
+
 /*----------------------------------------------------------------------------------------------- */
 
 @keyframes fadeIn {
@@ -340,5 +438,16 @@ form .btn-sm {
     to {
         opacity: 1;
         transform: scale(1);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.9);
     }
 }

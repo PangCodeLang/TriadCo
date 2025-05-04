@@ -1,0 +1,84 @@
+@extends('dashboard')
+
+@section('title', 'Edit Item - TriadCo')
+
+@section('head')
+    <link href="{{ asset('css/supplier.css') }}" rel="stylesheet">
+@endsection
+
+@section('content')
+<div class="container py-5">
+    <h2 class="fw-bold text-center mb-5 text-primary">EDIT ITEM</h2>
+    <div class="supplier-modal-content mx-auto">
+        <div class="supplier-modal-header">
+            EDIT ITEM INFORMATION
+        </div>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+        <div class="modal-body">
+            <!-- Corrected form action to use the update route -->
+            <form action="{{ route('inventory.update', ['id' => $item->item_id]) }}" method="POST">
+                @csrf
+                @method('PUT')
+
+                <div class="mb-3">
+                    <label for="name" class="form-label">Item Name</label>
+                    <input type="text" class="form-control form-input" id="name" name="name" 
+                           value="{{ old('name', $item->name) }}" 
+                           placeholder="Enter item name" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="category_id" class="form-label">Item Category</label>
+                    <select class="form-control" id="category_id" name="category_id" required>
+                        @foreach($categories as $category)
+                            <option value="{{ $category->itemctgry_id }}" 
+                                {{ $item->category_id == $category->itemctgry_id ? 'selected' : '' }}>
+                                {{ $category->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="stockin_id" class="form-label">Stock-In ID</label>
+                    <select class="form-control" id="stockin_id" name="stockin_id" required>
+                        @foreach($stockIns as $stockIn)
+                            <option value="{{ $stockIn->stockin_id }}" 
+                                {{ $item->stockin_id == $stockIn->stockin_id ? 'selected' : '' }}>
+                                {{ $stockIn->stockin_id }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="quantity" class="form-label">Quantity</label>
+                    <input type="number" class="form-control form-input" id="quantity" name="quantity" 
+                           value="{{ old('quantity', $item->quantity) }}" 
+                           placeholder="Enter quantity" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="price" class="form-label">Price</label>
+                    <input type="number" step="0.01" class="form-control form-input" id="price" name="price" 
+                           value="{{ old('price', $item->price) }}" 
+                           placeholder="Enter price" required>
+                </div>
+
+                <div class="button-row mt-4">
+                    <button type="submit" class="btn-update">Update Item</button>
+                    <a href="{{ route('inventory.index') }}" class="btn-canceledit">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endsection

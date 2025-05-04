@@ -11,7 +11,7 @@
     <h2 class="fw-bold text-center mb-5 text-primary">EDIT SUPPLIER</h2>
     <div class="supplier-modal-content mx-auto">
         <div class="supplier-modal-header">
-            Edit Supplier Information
+            EDIT SUPPLIER INFORMATION
         </div>
         @if ($errors->any())
             <div class="alert alert-danger">

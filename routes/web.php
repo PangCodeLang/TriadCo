@@ -6,6 +6,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\StockInController;
+use App\Http\Controllers\ItemController;
+use App\Http\Controllers\ItemCategoryController;
 
 Route::get('/', function () {
     if (Auth::check()) {
@@ -20,24 +23,30 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 //-----------------------------------------------------------------------------------------------
 
-// Common Routes (accessible by both Admin and Employees)
 Route::middleware('auth')->group(function () {
     
     Route::get('/suppliers', [SupplierController::class, 'index'])->name('suppliers.index');
     Route::post('/suppliers', [SupplierController::class, 'store'])->name('suppliers.store');
     Route::get('/suppliers/{id}/edit', [SupplierController::class, 'edit'])->name('suppliers.edit');
     Route::put('/suppliers/{id}', [SupplierController::class, 'update'])->name('suppliers.update');
-    Route::put('/suppliers/{supplier}', [SupplierController::class, 'update'])->name('suppliers.update');  
     Route::delete('/suppliers/{supplier}', [SupplierController::class, 'destroy'])->name('suppliers.destroy');  
 
-    Route::get('/stock-in', function () {
-        return view('stock_in.index');
-    })->name('stock-in.index');
+    Route::get('/stock_in', [StockInController::class, 'index'])->name('stock_in.index');
+    Route::get('/stock_in/create', [StockInController::class, 'create'])->name('stock_in.create');
+    Route::post('/stock_in', [StockInController::class, 'store'])->name('stock_in.store');
 
-    Route::get('/inventory', function () {
-        return view('inventory.index');
-    })->name('inventory.index');
-
+    Route::get('/inventory', [ItemController::class, 'index'])->name('inventory.index'); 
+    Route::get('/inventory/create/{stockin_id}', [ItemController::class, 'create'])->name('inventory.create'); 
+    Route::post('/inventory/{stockin_id}', [ItemController::class, 'store'])->name('inventory.store'); 
+    Route::get('/inventory/{id}/edit', [ItemController::class, 'edit'])->name('inventory.edit');
+    Route::put('/inventory/{id}', [ItemController::class, 'update'])->name('inventory.update'); 
+    Route::delete('/inventory/{id}', [ItemController::class, 'destroy'])->name('inventory.destroy'); 
+    Route::get('/inventory/item-categories', [ItemCategoryController::class, 'index'])->name('inventory.itemctgry');
+    Route::post('/inventory/item-categories', [ItemCategoryController::class, 'store'])->name('inventory.itemctgry.store');    
+    Route::get('/inventory/item-categories/{id}/edit', [ItemCategoryController::class, 'edit'])->name('inventory.itemctgryedit');
+    Route::put('/inventory/item-categories/{id}', [ItemCategoryController::class, 'update'])->name('inventory.itemctgry.update');
+    Route::delete('/inventory/item-categories/{id}', [ItemCategoryController::class, 'destroy'])->name('inventory.itemctgry.destroy');
+    
     Route::get('/rooms', function () {
         return view('rooms.index');
     })->name('rooms.index');
@@ -45,11 +54,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [AuthController::class, 'viewProfile'])->name('profile.view');
 });
 
-// Role-Based Routes
+//-----------------------------------------------------------------------------------------------
+
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
         if (auth()->user()->role === 'admin') {
-            return view('dashboard.main'); // Admin dashboard
+            return view('dashboard.main'); 
         } elseif (auth()->user()->role === 'employee') {
             $employee = \App\Models\Employee::where('user_id', auth()->id())->first();
             return view('dashboard.main', compact('employee')); // Pass $employee to the view
@@ -58,26 +68,52 @@ Route::middleware('auth')->group(function () {
     })->name('dashboard');
 
     // Admin-Only Routes
-    Route::group([], function () {
-        Route::get('/reports', function () {
-            if (auth()->user()->role !== 'admin') {
-                abort(403, 'Unauthorized');
-            }
-            return view('reports.index');
-        })->name('reports.index');
+    Route::get('/reports', function () {
+        if (auth()->user()->role !== 'admin') {
+            abort(403, 'Unauthorized');
+        }
+        return view('reports.index');
+    })->name('reports.index');
 
-        Route::get('/employees/create', function () {
-            if (auth()->user()->role !== 'admin') {
-                abort(403, 'Unauthorized');
-            }
-            return view('employees.create');
-        })->name('employees.create');
+    Route::get('/employees', function () {
+        if (auth()->user()->role !== 'admin') {
+            abort(403, 'Unauthorized');
+        }
+        return app(\App\Http\Controllers\EmployeeController::class)->index();
+    })->name('employees.index');
 
-        Route::post('/employees', function () {
-            if (auth()->user()->role !== 'admin') {
-                abort(403, 'Unauthorized');
-            }
-            app(EmployeeController::class)->store(request());
-        })->name('employees.store');
-    });
+    Route::get('/employees/create', function () {
+        if (auth()->user()->role !== 'admin') {
+            abort(403, 'Unauthorized');
+        }
+        return view('employees.create');
+    })->name('employees.create');
+
+    Route::post('/employees', function () {
+        if (auth()->user()->role !== 'admin') {
+            abort(403, 'Unauthorized');
+        }
+        return app(\App\Http\Controllers\EmployeeController::class)->store(request());
+    })->name('employees.store');
+
+    Route::get('/employees/{employee}/edit', function ($employee) {
+        if (auth()->user()->role !== 'admin') {
+            abort(403, 'Unauthorized');
+        }
+        return app(\App\Http\Controllers\EmployeeController::class)->edit(app(\App\Models\Employee::class)->findOrFail($employee));
+    })->name('employees.edit');
+
+    Route::put('/employees/{employee}', function ($employee) {
+        if (auth()->user()->role !== 'admin') {
+            abort(403, 'Unauthorized');
+        }
+        return app(\App\Http\Controllers\EmployeeController::class)->update(request(), app(\App\Models\Employee::class)->findOrFail($employee));
+    })->name('employees.update');
+
+    Route::delete('/employees/{employee}', function ($employee) {
+        if (auth()->user()->role !== 'admin') {
+            abort(403, 'Unauthorized');
+        }
+        return app(\App\Http\Controllers\EmployeeController::class)->destroy(app(\App\Models\Employee::class)->findOrFail($employee));
+    })->name('employees.destroy');
 });

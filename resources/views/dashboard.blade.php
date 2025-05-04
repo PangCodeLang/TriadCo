@@ -1,4 +1,3 @@
-<!-- filepath: c:\Users\jarma\Documents\TriadCo\TriadCo\resources\views\dashboard.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,14 +19,14 @@
     @endphp
 
     <div class="sidebar" id="sidebar">
-        <h2>TriadCo. Dashboard</h2>
+        <h2>TriadCo. System</h2>
         <center>
             <ul>
                 @if(auth()->user()->role === 'admin')
                     <li><a href="{{ route('dashboard') }}" class="nav-link">Dashboard</a></li>
                 @endif
-                <li><a href="#!" class="nav-link">Stock-In</a></li>
-                <li><a href="#!" class="nav-link">Inventory</a></li>
+                <li><a href="{{ route('stock_in.index') }}" class="nav-link">Stock-In</a></li>
+                <li><a href="{{ route('inventory.index') }}" class="nav-link">Inventory</a></li>
                 <li><a href="#!" class="nav-link">Rooms</a></li>
                 <li><a href="{{ route('suppliers.index') }}" class="nav-link">Suppliers</a></li>
                 @if(auth()->user()->role === 'admin')
@@ -52,8 +51,8 @@
                 
                 @if(Auth::user()->role === 'admin')
                     <button class="dropdown-item" onclick="toggleModal('createEmployeeModal')">Create Employee Account</button>
+                    <button class="dropdown-item" onclick="window.location.href='{{ route('employees.index') }}'">View Employees</button>                
                 @endif
-
                 <form action="{{ route('logout') }}" method="GET" style="display: inline;">
                     @csrf
                     <button type="submit" class="logout-btn dropdown-item">Log-Out</button>
