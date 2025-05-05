@@ -10,6 +10,9 @@ use App\Http\Controllers\StockInController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ItemCategoryController;
 
+//-----------------------------------------------------------------------------------------------
+
+// Default Route
 Route::get('/', function () {
     if (Auth::check()) {
         return redirect()->route('dashboard');
@@ -25,19 +28,14 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware('auth')->group(function () {
     
+    // Supplier 
     Route::get('/suppliers', [SupplierController::class, 'index'])->name('suppliers.index');
     Route::post('/suppliers', [SupplierController::class, 'store'])->name('suppliers.store');
     Route::get('/suppliers/{id}/edit', [SupplierController::class, 'edit'])->name('suppliers.edit');
     Route::put('/suppliers/{id}', [SupplierController::class, 'update'])->name('suppliers.update');
     Route::delete('/suppliers/{supplier}', [SupplierController::class, 'destroy'])->name('suppliers.destroy');  
-
-    Route::get('/stock_in', [StockInController::class, 'index'])->name('stock_in.index');
-    Route::get('/stock_in/create', [StockInController::class, 'create'])->name('stock_in.create');
-    Route::post('/stock_in', [StockInController::class, 'store'])->name('stock_in.store');
-    Route::get('/stock_in/{id}/edit', [StockInController::class, 'edit'])->name('stock_in.edit');
-    Route::put('/stock_in/{id}', [StockInController::class, 'update'])->name('stock_in.update');
-    Route::delete('/stock_in/{id}', [StockInController::class, 'destroy'])->name('stock_in.destroy');
     
+    // Inventory
     Route::get('/inventory', [ItemController::class, 'index'])->name('inventory.index'); 
     Route::post('/inventory', [ItemController::class, 'store'])->name('inventory.store'); // Removed stockin_id
     Route::get('/inventory/{id}/edit', [ItemController::class, 'edit'])->name('inventory.edit');
@@ -49,27 +47,40 @@ Route::middleware('auth')->group(function () {
     Route::put('/inventory/item-categories/{id}', [ItemCategoryController::class, 'update'])->name('inventory.itemctgry.update');
     Route::delete('/inventory/item-categories/{id}', [ItemCategoryController::class, 'destroy'])->name('inventory.itemctgry.destroy');
     
+    // Stock In 
+    Route::get('/stock_in', [StockInController::class, 'index'])->name('stock_in.index');
+    Route::get('/stock_in/create', [StockInController::class, 'create'])->name('stock_in.create');
+    Route::post('/stock_in', [StockInController::class, 'store'])->name('stock_in.store');
+    Route::get('/stock_in/{id}/edit', [StockInController::class, 'edit'])->name('stock_in.edit');
+    Route::put('/stock_in/{id}', [StockInController::class, 'update'])->name('stock_in.update');
+    Route::delete('/stock_in/{id}', [StockInController::class, 'destroy'])->name('stock_in.destroy');
+
+    // Rooms
     Route::get('/rooms', function () {
         return view('rooms.index');
     })->name('rooms.index');
-
+    
+    // Profile
     Route::get('/profile', [AuthController::class, 'viewProfile'])->name('profile.view');
 });
 
 //-----------------------------------------------------------------------------------------------
 
+// Admin-Only Routes
 Route::middleware('auth')->group(function () {
+
+    // Dashboard
     Route::get('/dashboard', function () {
         if (auth()->user()->role === 'admin') {
             return view('dashboard.main'); 
         } elseif (auth()->user()->role === 'employee') {
             $employee = \App\Models\Employee::where('user_id', auth()->id())->first();
-            return view('dashboard.main', compact('employee')); // Pass $employee to the view
+            return view('dashboard.main', compact('employee')); 
         }
         abort(403, 'Unauthorized');
     })->name('dashboard');
 
-    // Admin-Only Routes
+    // Reports
     Route::get('/reports', function () {
         if (auth()->user()->role !== 'admin') {
             abort(403, 'Unauthorized');
@@ -77,6 +88,7 @@ Route::middleware('auth')->group(function () {
         return view('reports.index');
     })->name('reports.index');
 
+    // Employees
     Route::get('/employees', function () {
         if (auth()->user()->role !== 'admin') {
             abort(403, 'Unauthorized');

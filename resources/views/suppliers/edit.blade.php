@@ -57,7 +57,7 @@
 
                 <div class="button-row mt-4">
                     <button type="submit" class="btn-update">Update Supplier</button>
-                    <a href="{{ route('suppliers.index') }}" class="btn-canceledit">Cancel</a>
+                    <a href="{{ route('suppliers.index') }}" class="btn-cancel">Cancel</a>
                 </div>
             </form>
         </div>

@@ -3,14 +3,14 @@
 @section('title', 'Stock-In - TriadCo')
 
 @section('head')
-    <link href="{{ asset('css/stock_in.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/supplier.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
 <div class="container py-5">
-    <h2>STOCK-IN</h2>
-    <div class="mb-4">
-        <button class="btn btn-add-stockin" onclick="toggleModal('addStockInModal', 'open')">
+    <h2 class="fw-bold text-center mb-5 text-primary">STOCK-IN</h2>
+    <div class="mb-4 d-flex gap-2">
+        <button class="btn btn-add-supplier w-100 text-center" onclick="toggleModal('addStockInModal', 'open')">
             Add Stock-In
         </button>
     </div>
@@ -37,7 +37,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="price" class="form-label">Price</label>
-                        <input type="number" step="0.01" class="form-control" id="price" name="price" readonly>
+                        <input type="text" class="form-control" id="price" name="price" placeholder="Price will appear here" readonly>
                     </div>
                     <div class="mb-3">
                         <label for="quantity" class="form-label">Quantity</label>
@@ -45,7 +45,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="total_price" class="form-label">Total Price</label>
-                        <input type="number" step="0.01" class="form-control" id="total_price" name="total_price" readonly>
+                        <input type="text" class="form-control" id="total_price" name="total_price" placeholder="Total price will appear here" readonly>
                     </div>
                     <div class="mb-3">
                         <label for="stockin_date" class="form-label">Stock-In Date</label>
@@ -63,8 +63,16 @@
     <!-- Stock-In Table -->
     <div class="glass-card glass-card-wide mx-auto">
         <div class="table-responsive mt-2">
-            <table class="table table-bordered table-striped align-middle stockin-table">
+            <table class="table table-bordered table-striped align-middle supplier-table">
                 <thead class="table-light">
+                    <tr>
+                        <th colspan="6">
+                            <form action="{{ route('stock_in.index') }}" method="GET" class="d-flex justify-content-end">
+                                <input type="text" name="search" class="form-control form-control-sm me-2" placeholder="Search stock-in records..." />
+                                <button type="submit" class="btn btn-sm btn-primary">Search</button>
+                            </form>
+                        </th>
+                    </tr>
                     <tr>
                         <th>Stock-In ID</th>
                         <th>Item</th>

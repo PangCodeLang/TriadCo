@@ -13,7 +13,7 @@ class AuthController extends Controller
             if (Auth::user()->role === 'admin') {
                 return redirect()->route('dashboard'); 
             } elseif (Auth::user()->role === 'employee') {
-                return redirect()->route('suppliers.index'); 
+                return redirect()->route('inventory.index'); 
             }
         }
         return view('login.login');
@@ -31,7 +31,7 @@ class AuthController extends Controller
             if (Auth::user()->role === 'admin') {
                 return redirect()->route('dashboard');
             } elseif (Auth::user()->role === 'employee') {
-                return redirect()->route('suppliers.index');
+                return redirect()->route('inventory.index');
             }
         }
 

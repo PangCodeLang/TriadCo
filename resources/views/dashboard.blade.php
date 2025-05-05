@@ -25,8 +25,8 @@
                 @if(auth()->user()->role === 'admin')
                     <li><a href="{{ route('dashboard') }}" class="nav-link">Dashboard</a></li>
                 @endif
-                <li><a href="{{ route('stock_in.index') }}" class="nav-link">Stock-In</a></li>
                 <li><a href="{{ route('inventory.index') }}" class="nav-link">Inventory</a></li>
+                <li><a href="{{ route('stock_in.index') }}" class="nav-link">Stock-In</a></li>
                 <li><a href="#!" class="nav-link">Rooms</a></li>
                 <li><a href="{{ route('suppliers.index') }}" class="nav-link">Suppliers</a></li>
                 @if(auth()->user()->role === 'admin')
@@ -50,8 +50,8 @@
                 <button class="dropdown-item" onclick="toggleModal('viewProfileModal')">View Profile</button>
                 
                 @if(Auth::user()->role === 'admin')
-                    <button class="dropdown-item" onclick="toggleModal('createEmployeeModal')">Create Employee Account</button>
-                    <button class="dropdown-item" onclick="window.location.href='{{ route('employees.index') }}'">View Employees</button>                
+                <button class="dropdown-item" onclick="window.location.href='{{ route('employees.index') }}'">View Employees</button>   
+                    <button class="dropdown-item" onclick="toggleModal('createEmployeeModal')">Register Employee</button>             
                 @endif
                 <form action="{{ route('logout') }}" method="GET" style="display: inline;">
                     @csrf

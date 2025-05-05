@@ -10,11 +10,9 @@
 <div class="container py-5">
     <h2>ITEM CATEGORIES</h2>
     <div class="mb-4 d-flex gap-2">
-        <!-- Add Category Button -->
         <button class="btn btn-add-supplier w-50" onclick="toggleModal('addCategoryModal', 'open')">
             Add Category
         </button>
-        <!-- Back Button -->
         <button onclick="window.location.href='{{ route('inventory.index') }}'" class="btn btn-back w-50 text-center">
             Back
         </button>

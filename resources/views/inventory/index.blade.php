@@ -59,6 +59,14 @@
             <table class="table table-bordered table-striped align-middle supplier-table">
                 <thead class="table-light">
                     <tr>
+                        <th colspan="6">
+                            <form action="{{ route('inventory.index') }}" method="GET" class="d-flex justify-content-end">
+                                <input type="text" name="search" class="form-control form-control-sm me-2" placeholder="Search items..." />
+                                <button type="submit" class="btn btn-sm btn-primary">Search</button>
+                            </form>
+                        </th>
+                    </tr>
+                    <tr>
                         <th>Item ID</th>
                         <th>Category</th>
                         <th>Item Name</th>
@@ -106,4 +114,8 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script src="{{ asset('js/inventory.js') }}"></script>
 @endsection

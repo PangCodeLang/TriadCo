@@ -58,12 +58,19 @@ label {
     margin: 0 auto;
 }
 .btn-cancel {
-    color: #6c757d;
+    background-color: #d6d6d6; 
+    color: #6c757d; 
     font-weight: bold;
-    text-decoration: none;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    width: 23%; 
+    transition: background-color 0.3s ease, transform 0.3s ease; 
 }
 .btn-cancel:hover {
-    color: #5a6268;
+    background-color: #dc3545; 
+    color: white; 
+    transform: scale(1.05); 
 }
 
 .alert {
@@ -397,13 +404,12 @@ form .btn-sm {
     border-radius: 8px;
     padding: 10px 20px;
     width: 23%; 
-    text-align: center;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease; 
 }
 
 .btn-canceledit:hover {
-    background-color: #e4606d; 
-    color: white;
+    background-color: #dc3545; 
+    color: white; 
     transform: scale(1.05); 
 }
 
