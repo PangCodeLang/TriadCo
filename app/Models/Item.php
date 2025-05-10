@@ -42,4 +42,11 @@ class Item extends Model
     {
         return $this->hasMany(StockIn::class, 'item_id', 'item_id');
     }
+    
+    public function rooms()
+    {
+        return $this->belongsToMany(Room::class, 'room_item', 'item_item_id', 'room_room_id')
+                    ->withPivot('quantity')
+                    ->withTimestamps();
+    }
 }

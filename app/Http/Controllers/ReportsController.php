@@ -6,6 +6,7 @@ use App\Models\Report;
 use App\Models\StockIn;
 use App\Models\Supplier;
 use App\Models\Item;
+use App\Models\Room;
 use Illuminate\Http\Request;
 
 class ReportsController extends Controller

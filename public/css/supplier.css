@@ -135,6 +135,75 @@ label {
     color: #ffffff; 
     transform: scale(1.02); 
 }
+
+.btn-major-edit {
+    background-color: #ffc107; 
+    font-weight: bold;
+    font-size: 0.9rem; 
+    padding: 10px; 
+    border: none;
+    border-radius: 8px;
+    width: 100%; 
+    transition: background-color 0.3s ease, transform 0.3s ease; 
+    margin-bottom: 15px; 
+}
+
+.btn-major-edit:hover {
+    background-color: #ffcd39; 
+    transform: scale(1.02); 
+}
+
+.btn-major-delete {
+    background-color: #dc3545; 
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 0.9rem; 
+    padding: 10px; 
+    border: none;
+    border-radius: 8px;
+    width: 100%; 
+    transition: background-color 0.3s ease, transform 0.3s ease; 
+    margin-bottom: 15px; 
+}
+
+.btn-major-delete:hover {
+    background-color: #e4606d;
+    color: #ffffff;
+    transform: scale(1.02); 
+}
+
+.btn-violet {
+    background-color: #7a3c7a;
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-violet:hover {
+    background-color: #ac3c9d;
+    transform: scale(1.1); 
+}
+
+.btn-assign {
+    background-color: #1b2e41;
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-assign:hover {
+    background-color: #ddc686;
+    transform: scale(1.1); 
+}
+
 /*----------------------------------------------------------------------------------------------- */
 
 .supplier-modal {
@@ -493,6 +562,30 @@ form .btn-sm {
     font-size: 1rem;
     font-weight: 500;
     color: #f8f9fa;
+}
+
+/*----------------------------------------------------------------------------------------------- */
+
+.badge {
+    display: inline-block;
+    padding: 0.50em 1.50em;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.25rem;
+}
+
+.badge-empty {
+    background-color: #6c757d; 
+    color: #fff;
+}
+
+.badge-occupied {
+    background-color: #17a2b8; 
+    color: #fff;
 }
 
 /*----------------------------------------------------------------------------------------------- */

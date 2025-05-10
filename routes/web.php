@@ -9,6 +9,8 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\StockInController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ItemCategoryController;
+use App\Http\Controllers\RoomTypeController;
+use App\Http\Controllers\RoomsController;
 use App\Http\Controllers\ReportsController;
 
 //-----------------------------------------------------------------------------------------------
@@ -20,6 +22,8 @@ Route::get('/', function () {
     }
     return redirect()->route('login'); 
 })->name('home');
+
+
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
@@ -57,9 +61,18 @@ Route::middleware('auth')->group(function () {
     Route::delete('/stock_in/{id}', [StockInController::class, 'destroy'])->name('stock_in.destroy');
 
     // Rooms
-    Route::get('/rooms', function () {
-        return view('rooms.index');
-    })->name('rooms.index');
+    Route::get('/rooms', [RoomsController::class, 'index'])->name('rooms.index'); 
+    Route::post('/rooms', [RoomsController::class, 'store'])->name('rooms.store'); 
+    Route::post('/rooms/{id}/assign', [RoomsController::class, 'assign'])->name('rooms.assign');
+    Route::get('/rooms/{id}/edit', [RoomsController::class, 'edit'])->name('rooms.edit');
+    Route::put('/rooms/{id}', [RoomsController::class, 'update'])->name('rooms.update'); 
+    Route::delete('/rooms/{id}', [RoomsController::class, 'destroy'])->name('rooms.destroy'); 
+    Route::get('/rooms/{id}/view', [RoomsController::class, 'view'])->name('rooms.view');
+    Route::get('/rooms/type', [RoomTypeController::class, 'index'])->name('rooms.type'); 
+    Route::post('/rooms/type', [RoomTypeController::class, 'store'])->name('rooms.type.store'); 
+    Route::get('/rooms/type/{id}/edit', [RoomTypeController::class, 'edit'])->name('rooms.type.edit');
+    Route::put('/rooms/type/{id}', [RoomTypeController::class, 'update'])->name('rooms.type.update'); 
+    Route::delete('/rooms/type/{id}', [RoomTypeController::class, 'destroy'])->name('rooms.type.destroy');
     
     // Profile
     Route::get('/profile', [AuthController::class, 'viewProfile'])->name('profile.view');

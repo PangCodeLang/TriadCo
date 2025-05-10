@@ -27,7 +27,7 @@
                 @endif
                 <li><a href="{{ route('inventory.index') }}" class="nav-link"><i class="bi bi-inboxes-fill"></i> Inventory</a></li>
                 <li><a href="{{ route('stock_in.index') }}" class="nav-link"><i class="bi bi-dropbox"></i> Stock-In</a></li>
-                <li><a href="#!" class="nav-link"><i class="bi bi-door-open-fill"></i> Rooms</a></li>
+                <li><a href="{{ route('rooms.index') }}" class="nav-link"><i class="bi bi-door-open-fill"></i> Rooms</a></li>
                 <li><a href="{{ route('suppliers.index') }}" class="nav-link"><i class="bi bi-person-fill-down"></i> Suppliers</a></li>
                 @if(auth()->user()->role === 'admin')
                     <li><a href="{{ route('reports.index') }}" class="nav-link"><i class="bi bi-list-columns"></i> Reports</a></li>
