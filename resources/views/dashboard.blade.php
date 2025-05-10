@@ -23,14 +23,14 @@
         <center>
             <ul>
                 @if(auth()->user()->role === 'admin')
-                    <li><a href="{{ route('dashboard') }}" class="nav-link">Dashboard</a></li>
+                    <li><a href="{{ route('dashboard') }}" class="nav-link"><i class="bi bi-activity"></i> Dashboard</a></li>
                 @endif
-                <li><a href="{{ route('inventory.index') }}" class="nav-link">Inventory</a></li>
-                <li><a href="{{ route('stock_in.index') }}" class="nav-link">Stock-In</a></li>
-                <li><a href="#!" class="nav-link">Rooms</a></li>
-                <li><a href="{{ route('suppliers.index') }}" class="nav-link">Suppliers</a></li>
+                <li><a href="{{ route('inventory.index') }}" class="nav-link"><i class="bi bi-inboxes-fill"></i> Inventory</a></li>
+                <li><a href="{{ route('stock_in.index') }}" class="nav-link"><i class="bi bi-dropbox"></i> Stock-In</a></li>
+                <li><a href="#!" class="nav-link"><i class="bi bi-door-open-fill"></i> Rooms</a></li>
+                <li><a href="{{ route('suppliers.index') }}" class="nav-link"><i class="bi bi-person-fill-down"></i> Suppliers</a></li>
                 @if(auth()->user()->role === 'admin')
-                    <li><a href="#!" class="nav-link">Reports</a></li>
+                    <li><a href="{{ route('reports.index') }}" class="nav-link"><i class="bi bi-list-columns"></i> Reports</a></li>
                 @endif
             </ul>
         </center>
@@ -162,7 +162,7 @@
                 sidebar.style.transform = 'translateX(-100%)';
                 setTimeout(() => {
                     sidebar.classList.add('hidden'); 
-                }, 10); 
+                }, 300); 
             }
         }
     

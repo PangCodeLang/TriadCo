@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\StockIn;
 use App\Models\Item;
+use App\Models\Supplier;
+use App\Models\Report; 
 use Illuminate\Http\Request;
 
 class StockInController extends Controller
@@ -11,12 +13,14 @@ class StockInController extends Controller
     public function index()
     {
         // Fetch all stock-in records with related items
-        $stockIns = StockIn::with('item')->get();
+        $stockIns = StockIn::with('item', 'supplier')->get();
+
+        $suppliers = Supplier::all();
 
         // Fetch all items for the dropdown in the add stock-in form
         $items = Item::all();
 
-        return view('stock_in.index', compact('stockIns', 'items'));
+        return view('stock_in.index', compact('stockIns', 'items', 'suppliers'));
     }
 
     public function create()
@@ -32,6 +36,7 @@ class StockInController extends Controller
         // Validate the request
         $validated = $request->validate([
             'item_id' => 'required|exists:items,item_id',
+            'supplier_id' => 'required|exists:suppliers,supplier_id',
             'quantity' => 'required|integer|min:1',
             'stockin_date' => 'required|date',
         ]);
@@ -44,6 +49,7 @@ class StockInController extends Controller
         // Create the stock-in record
         StockIn::create([
             'item_id' => $validated['item_id'],
+            'supplier_id' => $validated['supplier_id'],
             'quantity' => $validated['quantity'],
             'price' => $price,
             'total_price' => $totalPrice,
@@ -52,6 +58,11 @@ class StockInController extends Controller
 
         // Update the item's in_stock value
         $item->increment('in_stock', $validated['quantity']);
+
+        Report::create([
+            'activity' => 'Added Stock-In record for item: ' . $item->name,
+            'user_id' => auth()->id(),
+        ]);
 
         return redirect()->route('stock_in.index')->with('success', 'Stock-In record added successfully!');
     }
@@ -70,6 +81,7 @@ class StockInController extends Controller
         // Validate the request
         $validated = $request->validate([
             'item_id' => 'required|exists:items,item_id',
+            'supplier_id' => 'required|exists:suppliers,supplier_id',
             'quantity' => 'required|integer|min:1',
             'stockin_date' => 'required|date',
         ]);
@@ -86,6 +98,7 @@ class StockInController extends Controller
         $totalPrice = $price * $validated['quantity'];
         $stockIn->update([
             'item_id' => $validated['item_id'],
+            'supplier_id' => $validated['supplier_id'],
             'quantity' => $validated['quantity'],
             'price' => $price,
             'total_price' => $totalPrice,
@@ -94,6 +107,11 @@ class StockInController extends Controller
 
         // Update the item's in_stock value with the new quantity
         $item->increment('in_stock', $validated['quantity']);
+
+        Report::create([
+            'activity' => 'Updated Stock-In record for item: ' . $item->name,
+            'user_id' => auth()->id(),
+        ]);
 
         return redirect()->route('stock_in.index')->with('success', 'Stock-In record updated successfully!');
     }
@@ -109,6 +127,11 @@ class StockInController extends Controller
 
         // Delete the stock-in record
         $stockIn->delete();
+
+        Report::create([
+            'activity' => 'Deleted Stock-In record for item: ' . $item->name,
+            'user_id' => auth()->id(),
+        ]);
 
         return redirect()->route('stock_in.index')->with('success', 'Stock-In record deleted successfully!');
     }

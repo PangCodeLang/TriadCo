@@ -275,7 +275,8 @@ label {
 }
 
 .supplier-table th {
-    background-color: #f8f9fa;
+    background-color: #b5b7bb;
+    color: #3b3a3a;
     font-weight: bold;
 }
 
@@ -432,6 +433,66 @@ form .btn-sm {
 
 .stock-in-card ul li {
     margin-bottom: 5px;
+}
+
+/*-----------------------------------------------------------------------------------------------*/
+
+.filter-label {
+    font-family: 'Lora', serif;
+    font-size: 1rem;
+    color: #1e2a47; 
+}
+
+.filter-dropdown {
+    border-radius: 12px; 
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    border: 1px solid #ddd;
+    width: 200px;
+    transition: box-shadow 0.3s ease;
+}
+
+.filter-dropdown:focus {
+    box-shadow: 0 0 5px rgba(30, 42, 71, 0.5); 
+    outline: none;
+}
+
+/*-----------------------------------------------------------------------------------------------*/
+
+.stats-card {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.stats-card .card {
+    flex: 1;
+    background:#203354;
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stats-card .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.stats-card .card h3 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: #fff;
+}
+
+.stats-card .card p {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #f8f9fa;
 }
 
 /*----------------------------------------------------------------------------------------------- */

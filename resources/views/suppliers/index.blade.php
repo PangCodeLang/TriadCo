@@ -56,12 +56,12 @@
             <table class="table table-bordered table-striped align-middle supplier-table">
                 <thead class="table-light">
                     <tr>
-                        <th colspan="6">
+                        <td colspan="6">
                             <form action="{{ route('suppliers.index') }}" method="GET" class="d-flex justify-content-end">
                                 <input type="text" name="search" class="form-control form-control-sm me-2" placeholder="Search suppliers..." />
                                 <button type="submit" class="btn btn-sm btn-primary">Search</button>
                             </form>
-                        </th>
+                        </td>
                     </tr>
                     <tr>
                         <th>Supplier ID</th>

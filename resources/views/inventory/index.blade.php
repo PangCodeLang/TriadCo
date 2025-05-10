@@ -59,12 +59,21 @@
             <table class="table table-bordered table-striped align-middle supplier-table">
                 <thead class="table-light">
                     <tr>
-                        <th colspan="6">
+                        <td colspan="6">
                             <form action="{{ route('inventory.index') }}" method="GET" class="d-flex justify-content-end">
-                                <input type="text" name="search" class="form-control form-control-sm me-2" placeholder="Search items..." />
-                                <button type="submit" class="btn btn-sm btn-primary">Search</button>
+                                <label for="category_filter" class="me-2 fw-bold filter-label">Item Filter:</label>
+                                    <select name="category_filter" id="category_filter" class="form-select form-select-sm filter-dropdown me-3" onchange="this.form.submit()">
+                                        <option value="" {{ request('category_filter') == '' ? 'selected' : '' }}>All Categories</option>
+                                        @foreach($categories as $category)
+                                            <option value="{{ $category->itemctgry_id }}" {{ request('category_filter') == $category->itemctgry_id ? 'selected' : '' }}>
+                                                {{ $category->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <input type="text" name="search" class="form-control form-control-sm me-2" placeholder="Search items..." value="{{ request('search') }}" />
+                                    <button type="submit" class="btn btn-sm btn-primary">Search</button>
                             </form>
-                        </th>
+                        </td>
                     </tr>
                     <tr>
                         <th>Item ID</th>

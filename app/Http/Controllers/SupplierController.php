@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Supplier;
+use App\Models\Report;
 
 class SupplierController extends Controller
 {
@@ -28,9 +29,15 @@ class SupplierController extends Controller
             'contact_person' => 'required|string|max:255|unique:suppliers,contact_person',
         ]);
         $lastSupplier = Supplier::latest('supplier_id')->first();
-        $customId = $lastSupplier ? 'S' . str_pad(intval($lastSupplier->supplier_id) + 1, 3, '0', STR_PAD_LEFT) : 'S001';        Supplier::create([
+        $customId = $lastSupplier ? 'S' . str_pad(intval($lastSupplier->supplier_id) + 1, 3, '0', STR_PAD_LEFT) : 'S001';        
+        $supplier = Supplier::create([
             'supplier_id' => $customId,
             ...$validated,
+        ]);
+
+        Report::create([
+            'activity' => 'Added new supplier: ' . $supplier->name,
+            'user_id' => auth()->id(),
         ]);
 
         return redirect()->route('suppliers.index')->with('success', 'Supplier added successfully!');
@@ -54,12 +61,24 @@ class SupplierController extends Controller
 
         $supplier->update($validated);
 
+        Report::create([
+            'activity' => 'Updated supplier: ' . $supplier->name,
+            'user_id' => auth()->id(),
+        ]);
+
         return redirect()->route('suppliers.index')->with('success', 'Supplier updated successfully!');
     }
     public function destroy($supplier_id)
     {
         $supplier = Supplier::where('supplier_id', $supplier_id)->firstOrFail();
-        $supplier->delete();
+        $supplierName = $supplier->name;
+        $supplier->delete();  
+
+        Report::create([
+            'activity' => 'Deleted supplier: ' . $supplierName,
+            'user_id' => auth()->id(),
+        ]);
+        
         return redirect()->route('suppliers.index')->with('success', 'Supplier deleted successfully!');
     }
 }

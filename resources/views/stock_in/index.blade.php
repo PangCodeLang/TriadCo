@@ -36,15 +36,33 @@
                         </select>
                     </div>
                     <div class="mb-3">
+                        <label for="supplier_id" class="form-label">Supplier</label>
+                        <select class="form-control" id="supplier_id" name="supplier_id" required>
+                            <option value="" disabled selected>Select a supplier</option>
+                            @foreach($suppliers as $supplier)
+                                <option value="{{ $supplier->supplier_id }}">
+                                    {{ $supplier->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-3">
                         <label for="price" class="form-label">Price</label>
-                        <input type="text" class="form-control" id="price" name="price" placeholder="Price will appear here" readonly>
+                        <select class="form-control" id="price" name="price" required>
+                            <option value="" disabled selected>Select a price</option>
+                            @foreach($items as $item)
+                                <option value="{{ $item->price }}">
+                                    {{ number_format($item->price, 2) }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label for="quantity" class="form-label">Quantity</label>
                         <input type="number" class="form-control" id="quantity" name="quantity" placeholder="Enter quantity" required>
                     </div>
                     <div class="mb-3">
-                        <label for="total_price" class="form-label">Total Price</label>
+                        <label for="total_price" class="form-label" id="total_price_label">Total Price</label>
                         <input type="text" class="form-control" id="total_price" name="total_price" placeholder="Total price will appear here" readonly>
                     </div>
                     <div class="mb-3">
@@ -66,16 +84,17 @@
             <table class="table table-bordered table-striped align-middle supplier-table">
                 <thead class="table-light">
                     <tr>
-                        <th colspan="6">
+                        <td colspan="7">
                             <form action="{{ route('stock_in.index') }}" method="GET" class="d-flex justify-content-end">
                                 <input type="text" name="search" class="form-control form-control-sm me-2" placeholder="Search stock-in records..." />
                                 <button type="submit" class="btn btn-sm btn-primary">Search</button>
                             </form>
-                        </th>
+                        </td>
                     </tr>
                     <tr>
                         <th>Stock-In ID</th>
                         <th>Item</th>
+                        <th>Supplier</th>
                         <th>Quantity</th>
                         <th>Price</th>
                         <th>Total Price</th>
@@ -87,6 +106,7 @@
                         <tr>
                             <td>{{ $stockIn->stockin_id }}</td>
                             <td>{{ $stockIn->item->name }}</td>
+                            <td>{{ $stockIn->supplier->name }}</td> 
                             <td>{{ $stockIn->quantity }}</td>
                             <td>{{ number_format($stockIn->price, 2) }}</td>
                             <td>{{ number_format($stockIn->total_price, 2) }}</td>
@@ -94,7 +114,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="text-center">No stock-in records found.</td>
+                            <td colspan="7" class="text-center">No stock-in records found.</td>
                         </tr>
                     @endforelse
                 </tbody>

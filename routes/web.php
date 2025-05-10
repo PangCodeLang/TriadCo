@@ -9,6 +9,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\StockInController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ItemCategoryController;
+use App\Http\Controllers\ReportsController;
 
 //-----------------------------------------------------------------------------------------------
 
@@ -72,10 +73,10 @@ Route::middleware('auth')->group(function () {
     // Dashboard
     Route::get('/dashboard', function () {
         if (auth()->user()->role === 'admin') {
-            return view('dashboard.main'); 
+            return view('dashboard.index'); 
         } elseif (auth()->user()->role === 'employee') {
             $employee = \App\Models\Employee::where('user_id', auth()->id())->first();
-            return view('dashboard.main', compact('employee')); 
+            return view('dashboard.index', compact('employee')); 
         }
         abort(403, 'Unauthorized');
     })->name('dashboard');
@@ -85,7 +86,7 @@ Route::middleware('auth')->group(function () {
         if (auth()->user()->role !== 'admin') {
             abort(403, 'Unauthorized');
         }
-        return view('reports.index');
+        return app(\App\Http\Controllers\ReportsController::class)->index(request());
     })->name('reports.index');
 
     // Employees

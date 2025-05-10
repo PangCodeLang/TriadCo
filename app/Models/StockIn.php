@@ -10,7 +10,7 @@ class StockIn extends Model
     use HasFactory;
 
     protected $fillable = [
-        'stockin_id', 'item_id', 'quantity', 'price', 'total_price', 'stockin_date',
+        'stockin_id', 'item_id', 'supplier_id', 'quantity', 'price', 'total_price', 'stockin_date',
     ];
 
     protected $table = 'stock_in';
@@ -20,6 +20,7 @@ class StockIn extends Model
 
     public static $rules = [
         'item_id' => 'required|exists:items,item_id',
+        'supplier_id' => 'required|exists:suppliers,supplier_id',
         'quantity' => 'required|integer|min:1',
         'price' => 'required|numeric|min:0',
         'total_price' => 'required|numeric|min:0',
@@ -31,13 +32,17 @@ class StockIn extends Model
         static::creating(function ($stockIn) {
             $lastStockIn = StockIn::orderBy('stockin_id', 'desc')->first();
             $lastId = $lastStockIn ? (int) substr($lastStockIn->stockin_id, 2) : 0;
-            $newId = 'SI' . str_pad($lastId + 1, 3, '0', STR_PAD_LEFT);
-            $stockIn->stockin_id = $newId;
+            $stockIn->stockin_id = 'SI' . str_pad($lastId + 1, 3, '0', STR_PAD_LEFT);
         });
     }
 
     public function item()
     {
         return $this->belongsTo(Item::class, 'item_id', 'item_id');
+    }
+
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class, 'supplier_id', 'supplier_id');
     }
 }

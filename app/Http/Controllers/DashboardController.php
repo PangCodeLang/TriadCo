@@ -9,7 +9,7 @@ class DashboardController extends Controller
     public function loadSection($section)
     {
         $views = [
-            'dashboard' => 'dashboard.main',
+            'dashboard' => 'dashboard.index',
             'suppliers' => 'suppliers.index',
             'stock-in' => 'stock_in.index',
             'inventory' => 'inventory.index',

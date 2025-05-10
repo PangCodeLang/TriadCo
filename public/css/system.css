@@ -340,6 +340,7 @@ body.fade-in {
 
 .logout-btn:hover {
     background-color: #f14444;
+    color: white;
     transform: scale(1.05);
 }
 
