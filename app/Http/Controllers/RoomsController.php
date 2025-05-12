@@ -17,7 +17,7 @@ class RoomsController extends Controller
         $roomTypeFilter = $request->input('roomtype_filter');
 
         $roomTypes = RoomType::all();
-        $inventoryItems = Item::all(); // Fetch all inventory items
+        $inventoryItems = Item::all();
 
         $query = Room::with('type');
 
@@ -39,7 +39,6 @@ class RoomsController extends Controller
 
     public function assignItems(Request $request, $id)
     {
-        // Validate the request
         $validated = $request->validate([
             'items.*.item_id' => 'required|exists:items,item_id',
             'items.*.quantity' => 'required|integer|min:1',
@@ -50,30 +49,25 @@ class RoomsController extends Controller
         foreach ($validated['items'] as $item) {
             $inventoryItem = Item::find($item['item_id']);
 
-            // Check if there's enough stock
             if ($inventoryItem->in_stock < $item['quantity']) {
                 return redirect()->back()->withErrors([
                     'error' => "Not enough stock for item: {$inventoryItem->name}",
                 ]);
             }
 
-            // Deduct the stock
             $inventoryItem->in_stock -= $item['quantity'];
             $inventoryItem->save();
 
-            // Assign the item to the room (update or insert into pivot table)
             $room->items()->syncWithoutDetaching([
                 $item['item_id'] => ['quantity' => $item['quantity']],
             ]);
         }
 
-        // Update the room status to "occupied" if it has assigned items
         if ($room->items()->count() > 0) {
             $room->status = 'occupied';
             $room->save();
         }
 
-        // Log the activity
         Report::create([
             'activity' => 'Assigned items to room ID: ' . $id,
             'user_id' => auth()->id(),
@@ -156,25 +150,26 @@ class RoomsController extends Controller
             return redirect()->back()->withErrors(['error' => 'Invalid quantity for return.']);
         }
 
-        // Deduct the quantity from the room
         $newQuantity = $item->pivot->quantity - $validated['quantity'];
         if ($newQuantity > 0) {
             $room->items()->updateExistingPivot($validated['item_id'], [
                 'quantity' => $newQuantity,
             ]);
         } else {
-            // Remove the item from the pivot table if the quantity becomes 0
             $room->items()->detach($validated['item_id']);
         }
 
-        // Add the returned item to the returned_items table
         ReturnedItem::create([
             'item_id' => $validated['item_id'],
             'quantity' => $validated['quantity'],
             'reason' => $validated['reason'],
         ]);
 
-        // Update room status if no items are left
+        Report::create([
+            'activity' => 'Returned item: ' . $item->name . ' (Quantity: ' . $validated['quantity'] . ') from room: ' . $room->name . '. Reason: ' . $validated['reason'],
+            'user_id' => auth()->id(),
+        ]);
+
         if ($room->items()->sum('room_item.quantity') == 0) {
             $room->status = 'empty';
             $room->save();
@@ -182,6 +177,7 @@ class RoomsController extends Controller
 
         return redirect()->route('rooms.view', $id)->with('success', 'Item returned successfully!');
     }
+
     public function view($id)
     {
         $room = Room::with('type', 'items')->findOrFail($id);

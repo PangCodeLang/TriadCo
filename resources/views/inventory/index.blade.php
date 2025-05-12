@@ -17,7 +17,11 @@
             Item Categories
         </button>
     </div>
-
+    <div>
+        <button class="btn btn-black w-100 h-25" onclick="window.location.href='{{ route('stock_out.index') }}'">
+            <i class="bi bi-box-seam"></i> STOCK-OUT CART
+        </button>
+    </div>
     <!-- Modal -->
     <div class="supplier-modal hidden" id="addItemModal">
         <div class="modal-content">
@@ -72,7 +76,7 @@
                         <input type="number" class="form-control" id="stock_out_quantity" name="quantity" min="1" required>
                     </div>
                     <div class="button-row">
-                        <button type="submit" class="btn-add">Move to Stock-Out Cart</button>
+                        <button type="submit" class="btn-add">Move to Stock-Out</button>
                         <button type="button" class="btn-cancel" onclick="toggleModal('stockOutModal', 'close')">Cancel</button>
                     </div>
                 </form>
@@ -122,11 +126,15 @@
                                 @if ($item->in_stock > 0)
                                     {{ $item->in_stock }}
                                 @else
-                                    <span class="text-danger">No Stock</span>
+                                    <span class="badge badge-empty">No Stock</span>
                                 @endif
                             </td>
                             <td>
                                 <div class="d-flex gap-2">
+                                    <button type="button" class="btn btn-sm btn-small-black" 
+                                        onclick="openStockOutModal('{{ $item->item_id }}', '{{ $item->name }}', {{ $item->in_stock }})">
+                                        Stock-Out
+                                    </button>
                                     <a href="{{ route('inventory.edit', $item->item_id) }}" class="btn btn-edit">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
@@ -151,9 +159,6 @@
     </div>
 </div>
 <br>
-    <button class="btn btn-black w-100 h-25" onclick="window.location.href='{{ route('stock_out.index') }}'">
-        STOCK-OUT CART
-    </button>
 <div class="glass-card glass-card-wide mx-auto mt-4">
     <h2 class=>Returned Items</h2>
     <div class="table-responsive mt-2">
@@ -168,17 +173,16 @@
             </thead>
             <tbody>
                 @forelse($returnedItems as $returnedItem)
-                    <tr>
+                    <tr id="returned-item-{{ $returnedItem->item_id }}">
                         <td>{{ $returnedItem->item->name }}</td>
-                        <td>{{ $returnedItem->quantity }}</td>
+                        <td id="quantity-{{ $returnedItem->item_id }}">{{ $returnedItem->quantity }}</td>
                         <td style="width: 50%;">{{ $returnedItem->reason }}</td>
                         <td> 
                             <div class="d-flex gap-2">
-                                <form action="{{ route('stock_out.add', ['id' => $returnedItem->item_id]) }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="quantity" value="{{ $returnedItem->quantity }}">
-                                    <button type="submit" class="btn btn-sm btn-black">Move to Stock-Out</button>
-                                </form>
+                                <button type="button" class="btn btn-md btn-small-black" 
+                                    onclick="openStockOutModal('{{ $returnedItem->item_id }}', '{{ $returnedItem->item->name }}', {{ $returnedItem->quantity }})">
+                                    Move to Stock-Out
+                                </button>
                             </div>
                         </td>
                     </tr>

@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Report;
 use App\Models\StockIn;
+use App\Models\StockOut;
 use App\Models\Supplier;
 use App\Models\Item;
 use App\Models\Room;
-use App\Models\StockOut;
+use App\Models\ReturnedItem;
 use Illuminate\Http\Request;
 
 class ReportsController extends Controller
@@ -16,6 +17,7 @@ class ReportsController extends Controller
     {
         $filter = $request->input('filter');
 
+        // Query for filtering reports
         $query = Report::with('user')->orderBy('created_at', 'desc');
 
         if ($filter == 'items') {
@@ -36,6 +38,7 @@ class ReportsController extends Controller
 
         $reports = $query->paginate(10);
 
+        // Statistics for the cards
         $totalStockInThisMonth = StockIn::whereMonth('stockin_date', now()->month)
             ->whereYear('stockin_date', now()->year)
             ->count();
@@ -47,7 +50,49 @@ class ReportsController extends Controller
 
         $totalSuppliers = Supplier::count();
         $totalItems = Item::count();
+        $totalRooms = Room::count();
+        $occupiedRooms = Room::where('status', 'occupied')->count();
+        $emptyRooms = Room::where('status', 'empty')->count();
+        $totalCategories = Item::distinct('category_id')->count();
 
-        return view('reports.index', compact('reports', 'totalStockInThisMonth', 'totalStockOutThisMonth', 'totalSuppliers', 'totalItems'));
+        // Advanced statistics
+        $topStockedOutItem = StockOut::select('item_id', \DB::raw('SUM(quantity) as total'))
+            ->groupBy('item_id')
+            ->orderByDesc('total')
+            ->with('item')
+            ->first();
+
+        $topStockedInItem = StockIn::select('item_id', \DB::raw('SUM(quantity) as total'))
+            ->groupBy('item_id')
+            ->orderByDesc('total')
+            ->with('item')
+            ->first();
+
+        $mostActiveUser = Report::select('user_id', \DB::raw('COUNT(*) as total'))
+            ->groupBy('user_id')
+            ->orderByDesc('total')
+            ->with('user')
+            ->first();
+
+        $totalReturnedItems = ReturnedItem::sum('quantity');
+
+        $recentActivities = Report::latest()->take(5)->get();
+
+        return view('reports.index', compact(
+            'reports',
+            'totalStockInThisMonth',
+            'totalStockOutThisMonth',
+            'totalSuppliers',
+            'totalItems',
+            'totalRooms',
+            'occupiedRooms',
+            'emptyRooms',
+            'totalCategories',
+            'topStockedOutItem',
+            'topStockedInItem',
+            'mostActiveUser',
+            'totalReturnedItems',
+            'recentActivities'
+        ));
     }
 }

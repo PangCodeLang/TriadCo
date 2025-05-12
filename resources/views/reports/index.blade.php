@@ -10,26 +10,6 @@
 <div class="container py-5">
     <h2 class="fw-bold text-center mb-5 text-primary">REPORTS</h2>
 
-    <!-- Statistics Cards -->
-    <div class="stats-card">
-        <div class="card">
-            <h3>{{ $totalStockInThisMonth }}</h3>
-            <p>Total Stock-In This Month</p>
-        </div>
-        <div class="card">
-            <h3>{{ $totalStockOutThisMonth }}</h3>
-            <p>Total Stock-Out This Month</p>
-        </div>
-        <div class="card">
-            <h3>{{ $totalSuppliers }}</h3>
-            <p>Total Suppliers</p>
-        </div>
-        <div class="card">
-            <h3>{{ $totalItems }}</h3>
-            <p>Total Items</p>
-        </div>
-    </div>
-
     <div class="glass-card glass-card-wide mx-auto">
         <!-- Reports Table -->
         <div class="table-responsive mt-2">
@@ -71,6 +51,68 @@
                     @endforelse
                 </tbody>
             </table>
+        </div>
+    </div>
+    <br>
+    <div class="stats-container d-flex">
+        <!-- Left Column -->
+        <div class="stats-left">
+            <!-- Small Cards -->
+            <div class="card small-card">
+                <h3 class="stats-header">{{ $totalRooms }}</h3>
+                <p>Total Rooms</p>
+            </div>
+            <div class="card small-card">
+                <h3 class="stats-header">{{ $occupiedRooms }}</h3>
+                <p>Occupied Rooms</p>
+            </div>
+            <div class="card small-card">
+                <h3 class="stats-header">{{ $emptyRooms }}</h3>
+                <p>Empty Rooms</p>
+            </div>
+            <div class="card small-card">
+                <h3 class="stats-header">{{ $totalCategories }}</h3>
+                <p>Total Categories</p>
+            </div>
+
+            <!-- Medium Cards -->
+            <div class="card medium-card">
+                <h3 class="stats-header">{{ $topStockedOutItem->name ?? 'N/A' }}</h3>
+                <p>Top Stocked-Out Item</p>
+            </div>
+            <div class="card medium-card">
+                <h3 class="stats-header">{{ $topStockedInItem->name ?? 'N/A' }}</h3>
+                <p>Top Stocked-In Item</p>
+            </div>
+            <div class="card medium-card">
+                <h3 class="stats-header">{{ $mostActiveUser->name ?? 'N/A' }}</h3>
+                <p>Most Active User</p>
+            </div>
+            <div class="card medium-card">
+                <h3 class="stats-header">{{ $totalReturnedItems }}</h3>
+                <p>Total Returned Items</p>
+            </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="stats-right">
+            <!-- Long Cards -->
+            <div class="card long-card">
+                <h3 class="stats-header">Monthly Activity Summary</h3>
+                <ul>
+                    <li>Stock-Ins: {{ $totalStockInThisMonth }}</li>
+                    <li>Stock-Outs: {{ $totalStockOutThisMonth }}</li>
+                    <li>Items Added: {{ $totalItems }}</li>
+                </ul>
+            </div>
+            <div class="card long-card">
+                <h3 class="stats-header">Recent Activities</h3>
+                <ul>
+                    @foreach($recentActivities as $activity)
+                        <li>{{ $activity->activity }} ({{ $activity->created_at->format('Y-m-d H:i:s') }})</li>
+                    @endforeach
+                </ul>
+            </div>
         </div>
     </div>
 </div>

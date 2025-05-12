@@ -14,14 +14,9 @@ class ItemController extends Controller
     {
         $search = $request->input('search');
         $categoryFilter = $request->input('category_filter');
-
-        // Fetch returned items with their related items
         $returnedItems = ReturnedItem::with('item')->get();
-
-        // Fetch all item categories
         $categories = ItemCategory::all();
 
-        // Query items with optional filters
         $query = Item::with('category');
 
         if ($categoryFilter) {
@@ -37,7 +32,6 @@ class ItemController extends Controller
 
         $items = $query->paginate(10);
 
-        // Pass $returnedItems to the view
         return view('inventory.index', compact('items', 'categories', 'returnedItems'));
     }
 
@@ -111,14 +105,5 @@ class ItemController extends Controller
         $returnedItem->delete();
 
         return redirect()->route('inventory.index')->with('success', 'Item stocked out successfully!');
-    }
-
-    public function reassign($id)
-    {
-        $returnedItem = ReturnedItem::findOrFail($id);
-
-        $returnedItem->delete();
-
-        return redirect()->route('inventory.index')->with('success', 'Item reassigned successfully!');
     }
 }

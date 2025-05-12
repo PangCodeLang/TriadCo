@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\StockOut;
 use App\Models\Item;
+use App\Models\ReturnedItem;
 use App\Models\Report;
 use Illuminate\Http\Request;
 
@@ -22,21 +23,54 @@ class StockOutController extends Controller
             'quantity' => 'required|integer|min:1',
         ]);
 
-        $item = Item::findOrFail($id);
+        $item = Item::where('item_id', $id)->first();
 
-        if ($validated['quantity'] > $item->in_stock) {
-            return redirect()->back()->withErrors(['error' => 'Quantity exceeds available stock.']);
+        if ($item) {
+            if ($validated['quantity'] > $item->in_stock) {
+                return redirect()->back()->withErrors(['error' => 'Quantity exceeds available stock.']);
+            }
+
+            StockOut::create([
+                'item_id' => $item->item_id,
+                'quantity' => $validated['quantity'],
+            ]);
+
+            // Update the remaining quantity in the Items Table
+            $item->in_stock -= $validated['quantity'];
+
+            // Save the updated item
+            $item->save();
+        } else {
+            // If not found in Items Table, try the Returned Items Table
+            $returnedItem = ReturnedItem::where('item_id', $id)->first();
+
+            if (!$returnedItem) {
+                return redirect()->back()->withErrors(['error' => 'Item not found in either inventory or returned items.']);
+            }
+
+            // Handle stock-out for Returned Items Table
+            if ($validated['quantity'] > $returnedItem->quantity) {
+                return redirect()->back()->withErrors(['error' => 'Quantity exceeds available stock in returned items.']);
+            }
+
+            // Add the item to the Stock-Out table
+            StockOut::create([
+                'item_id' => $returnedItem->item_id,
+                'quantity' => $validated['quantity'],
+            ]);
+
+            // Update the remaining quantity in the Returned Items Table
+            $returnedItem->quantity -= $validated['quantity'];
+
+            // If the quantity becomes 0, delete the returned item
+            if ($returnedItem->quantity <= 0) {
+                $returnedItem->delete();
+            } else {
+                $returnedItem->save();
+            }
         }
 
-        StockOut::create([
-            'item_id' => $item->item_id,
-            'quantity' => $validated['quantity'],
-        ]);
-
-        $item->in_stock -= $validated['quantity'];
-        $item->save();
-
-        return redirect()->route('stock_out.index')->with('success', 'Item added to Stock-Out successfully.');
+        return redirect()->route('inventory.index')->with('success', 'Item successfully moved to Stock-Out.');
     }
 
     public function finalize(Request $request)

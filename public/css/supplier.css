@@ -136,6 +136,26 @@ label {
     transform: scale(1.02); 
 }
 
+.btn-small-black {
+    background-color: #151618; 
+    color: white;
+    font-weight: bold;
+    font-size: 0.9rem;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px; 
+    height: 40px;
+    border-radius: 8px; 
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-small-black:hover {
+    background-color: #270702; 
+    transform: scale(1.05); 
+}
+
 .btn-back {
     background-color: #878d92; 
     color: rgb(0, 0, 0); 
@@ -620,16 +640,32 @@ form .btn-sm {
 
 /*-----------------------------------------------------------------------------------------------*/
 
-.stats-card {
+.stats-container {
     display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    margin-bottom: 2rem;
+    gap: 2rem;
+    flex-wrap: wrap; /* Ensure cards wrap on smaller screens */
 }
 
-.stats-card .card {
+/* Left Column */
+.stats-left {
+    flex: 2;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem; /* Increased gap for better spacing */
+    align-content: flex-start; /* Align cards to the top */
+}
+
+/* Right Column */
+.stats-right {
     flex: 1;
-    background:#203354;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem; /* Increased gap for better spacing */
+}
+
+/* General Card Styles */
+.stats-card .card {
+    background: linear-gradient(to bottom right, #1e3a5f, #ffffff);
     border-radius: 12px;
     padding: 1.5rem;
     text-align: center;
@@ -643,17 +679,112 @@ form .btn-sm {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
-.stats-card .card h3 {
-    font-size: 2rem;
-    font-weight: bold;
+.stats-header {
+    font-family: 'Raleway', sans-serif; /* Apply Raleway font */
+    font-size: 2rem; /* Adjust font size */
+    font-weight: bold; /* Make the text bold */
     margin-bottom: 0.5rem;
-    color: #fff;
+    color: white; /* Set text color to white */
+    background-color: #1e3a5f; /* Blue header background */
+    padding: 10px; /* Add padding inside the header */
+    border-radius: 8px; /* Add rounded corners */
+    text-align: center; /* Center-align the text */
 }
 
-.stats-card .card p {
+/* Small Cards */
+.stats-card .small-card {
+    flex: 1 1 calc(48% - 1rem); /* Two cards per row with spacing */
+    background: linear-gradient(to bottom right, #1e3a5f, #ffffff);
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: center;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stats-card .small-card h3 {
+    font-family: 'Raleway', sans-serif;
+    font-size: 1.8rem; /* Slightly smaller font size */
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: white;
+    background-color: #1e3a5f;
+    padding: 8px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.stats-card .small-card p {
     font-size: 1rem;
     font-weight: 500;
     color: #f8f9fa;
+}
+
+/* Medium Cards */
+.stats-card .medium-card {
+    flex: 1 1 calc(48% - 1rem); /* Two cards per row with spacing */
+    background: linear-gradient(to bottom right, #2a4a6e, #ffffff);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stats-card .medium-card h3 {
+    font-family: 'Raleway', sans-serif;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: white;
+    background-color: #2a4a6e;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.stats-card .medium-card p {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #f8f9fa;
+}
+
+.stats-card .long-card {
+    flex: 1;
+    background: linear-gradient(to bottom right, #3a5a7e, #ffffff);
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: left;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stats-card .long-card h3 {
+    font-family: 'Raleway', sans-serif;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: white;
+    background-color: #3a5a7e;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.stats-card .long-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    color: #f8f9fa;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.stats-card .long-card ul li {
+    margin-bottom: 0.5rem;
 }
 
 /*----------------------------------------------------------------------------------------------- */

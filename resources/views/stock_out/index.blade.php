@@ -34,11 +34,18 @@
         </div>
     </div>
     <br>
-    <div class="text-end mt-3">
-        <form action="{{ route('stock_out.finalize') }}" method="POST">
-            @csrf
-            <button type="submit" class="btn btn-black">Stock Out</button>
-        </form>
+    <div class="mb-4 d-flex gap-2">
+        <div class="w-100">
+            <form action="{{ route('stock_out.finalize') }}" method="POST">
+                @csrf
+                <button type="submit" class="btn btn-black w-100">Stock-Out</button>
+            </form>
+        </div>
+        <div class="w-100">
+            <button onclick="window.location.href='{{ route('inventory.index') }}'" class="btn btn-back w-100 text-center">
+                Back
+            </button>
+        </div>
     </div>
 </div>
 @endsection

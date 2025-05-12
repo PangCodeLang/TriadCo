@@ -65,7 +65,7 @@
                             <td>{{ $item->name }}</td>
                             <td>{{ $item->pivot->quantity }}</td>
                             <td>
-                                <button type="button" class="btn btn-warning btn-sm" onclick="openReturnItemModal('{{ $item->item_id }}', {{ $item->pivot->quantity }})">
+                                <button type="button" class="btn btn-violet btn-sm" onclick="openReturnItemModal('{{ $item->item_id }}', {{ $item->pivot->quantity }})">
                                     Return Item
                                 </button>
                             </td>

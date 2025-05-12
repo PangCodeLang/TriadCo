@@ -25,8 +25,8 @@
                 @if(auth()->user()->role === 'admin')
                     <li><a href="{{ route('dashboard') }}" class="nav-link"><i class="bi bi-activity"></i> Dashboard</a></li>
                 @endif
-                <li><a href="{{ route('inventory.index') }}" class="nav-link"><i class="bi bi-inboxes-fill"></i> Inventory</a></li>
                 <li><a href="{{ route('stock_in.index') }}" class="nav-link"><i class="bi bi-dropbox"></i> Stock-In</a></li>
+                <li><a href="{{ route('inventory.index') }}" class="nav-link"><i class="bi bi-inboxes-fill"></i> Inventory</a></li>
                 <li><a href="{{ route('rooms.index') }}" class="nav-link"><i class="bi bi-door-open-fill"></i> Rooms</a></li>
                 <li><a href="{{ route('suppliers.index') }}" class="nav-link"><i class="bi bi-person-fill-down"></i> Suppliers</a></li>
                 @if(auth()->user()->role === 'admin')
@@ -280,16 +280,15 @@
         }
 
         function openStockOutModal(itemId, itemName, maxQuantity) {
-            // Set the form action dynamically
             const form = document.getElementById('stockOutForm');
             form.action = `/inventory/stock-out/${itemId}`;
 
-            // Populate the modal fields
             document.getElementById('stock_out_item_id').value = itemId;
             document.getElementById('stock_out_item_name').value = itemName;
-            document.getElementById('stock_out_quantity').max = maxQuantity;
+            const quantityInput = document.getElementById('stock_out_quantity');
+            quantityInput.value = 1; 
+            quantityInput.max = maxQuantity; 
 
-            // Open the modal
             toggleModal('stockOutModal', 'open');
         }
         
