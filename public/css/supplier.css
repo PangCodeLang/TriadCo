@@ -813,6 +813,276 @@ form .btn-sm {
 
 /*----------------------------------------------------------------------------------------------- */
 
+/* Inventory Dashboard Styles */
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --background-color: #f4f6f7;
+    --card-background: #ffffff;
+    --text-color: #333;
+    --border-radius: 12px;
+    --occupied-rooms-color: #2ecc71;
+    --empty-rooms-color: #e74c3c;
+}
+
+.inventory-dashboard {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: var(--background-color);
+}
+
+.dashboard-title {
+    font-family: 'Raleway', sans-serif;
+    font-size: 2.5rem; 
+    font-weight: bold; 
+    color: #1e3a5f;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.dashboard-subtitle {
+    color: #666;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.dashboard-card {
+    background-color: var(--card-background);
+    border-radius: var(--border-radius);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    transition: transform 0.3s ease;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+}
+
+.card-title {
+    color: var(--primary-color);
+    font-size: 16px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid var(--secondary-color);
+    padding-bottom: 10px;
+}
+
+.summary-card .card-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.large-number {
+    font-size: 36px;
+    font-weight: bold;
+    color: var(--secondary-color);
+}
+
+.chart-card {
+    grid-column: span 2;
+}
+
+.chart-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.pie-chart {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background-color: transparent;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.pie-chart-segment {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    clip-path: circle(50%);
+    transform-origin: center;
+    z-index: 0;
+}
+
+.occupied-rooms {
+    background-color: var(--occupied-rooms-color);
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%);
+    transform: rotate(0deg);
+    z-index: 1;
+}
+
+.empty-rooms {
+    background-color: var(--empty-rooms-color);
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%);
+    transform: rotate(216deg);
+    z-index: 2;
+}
+
+.pie-chart-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70%;
+    height: 70%;
+    background-color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.pie-chart-label {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.chart-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.legend-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+}
+
+.legend-color.occupied-rooms {
+    background-color: #28a745;
+}
+
+.legend-color.empty-rooms {
+    background-color: #dc3545;
+}
+
+.summary-reports-card {
+    grid-column: span 2;
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.summary-reports h4 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #1e3a5f;
+    margin-bottom: 10px;
+}
+
+.recent-activities {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.recent-activities li {
+    font-size: 0.9rem;
+    color: #333333;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 5px;
+}
+
+.recent-activities li:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.no-stock-items-card {
+    grid-column: span 2;
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.no-stock-items p {
+    font-size: 1rem;
+    color: #333333;
+    margin-bottom: 10px;
+}
+
+.no-stock-items-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.no-stock-items-list li {
+    font-size: 0.9rem;
+    color: #333333;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 5px;
+}
+
+.no-stock-items-list li:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .chart-card {
+        grid-column: span 2;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .chart-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .chart-legend {
+        margin-top: 20px;
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .legend-item {
+        margin-right: 15px;
+    }
+}
+
+/*----------------------------------------------------------------------------------------------- */
+
 @keyframes fadeIn {
     from {
         opacity: 0;
