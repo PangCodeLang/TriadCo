@@ -93,14 +93,8 @@ Route::middleware('auth')->group(function () {
     // Dashboard
     Route::get('/dashboard', function () {
         if (auth()->user()->role === 'admin') {
-            // Call the MainController's index method
             return app(\App\Http\Controllers\MainController::class)->index(request());
-        } elseif (auth()->user()->role === 'employee') {
-            // Fetch employee data for employees
-            $employee = \App\Models\Employee::where('user_id', auth()->id())->first();
-            return view('dashboard.index', compact('employee'));
         }
-        // Unauthorized access
         abort(403, 'Unauthorized');
     })->name('dashboard');
 

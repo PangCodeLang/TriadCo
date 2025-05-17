@@ -76,7 +76,6 @@ class ItemController extends Controller
         $item = Item::findOrFail($id);
         $item->update($validated);
 
-        // Log the activity
         Report::create([
             'activity' => 'Updated item: ' . $item->name,
             'user_id' => auth()->id(),
